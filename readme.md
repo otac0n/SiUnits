@@ -9,4 +9,18 @@ SiUnits
 Getting Started
 ---------------
 
-    PM> Install-Package SiUnits
+```C#
+var speed = 10 * (Units)"m/s"; // Create a variable containing a speed.
+var distance = 2 * (Units)"kilometer"; // Create a variable containing a distance.
+var time = distance / speed; // Divide the distance by the speed to obtain a total time.
+
+var timeInSeconds = time / (Units)"second"; // Divide the time by the desired units to obtain a constant.
+// Returns 200.0
+```
+
+The parser supports many arbitrary forms for units, for example, the following are all equivalent:
+
+* `kilometer / second`
+* `km/s`
+* `10^3 m s^-1`
+* `1/(10^-3*m^-1*s)`

@@ -13,5 +13,17 @@ namespace SiUnits.Tests
             var massInGrams = mass / "gram";
             Assert.Equal(1000, massInGrams);
         }
+
+        [Fact]
+        public void Integration_SpeedEquation()
+        {
+            var speed = 10 * (Units)"m*s^-1";
+            var distance = 2 * (Units)"kilometer";
+            var time = distance / speed;
+
+            var timeInSeconds = time / (Units)"second";
+
+            Assert.Equal(200.0, timeInSeconds);
+        }
     }
 }
