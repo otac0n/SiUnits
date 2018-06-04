@@ -1,0 +1,130 @@
+@namespace SiUnits
+@using System.Linq
+
+start <Factor> = _ f:factor _ EOF { f }
+
+factor <Factor> -memoize
+    = left:factor (_ [*·⋅] _ / WS) right:power { left * right }
+    / left:factor _ "/" _ right:power { left / right }
+    / power
+
+power <Factor>
+    = left:primary _ "^" _ right:int { left.Pow(right) }
+    / primary
+
+primary <Factor> -memoize
+    = numberFactor
+    / siUnitFactor
+    / nameFactor
+    / "(" f:factor ")" { f }
+
+numberFactor <NumberFactor>
+    = n:int { new NumberFactor(n) }
+
+siUnitFactor <Factor>
+    = p:siPrefixSymbol n:siUnitSymbol !name { p * n }
+    / n:siUnitSymbol !name { n }
+    / p:siPrefix n:siUnitName !name { p * n }
+    / n:siUnitName !name { n }
+
+siPrefixSymbol <NumberFactor>
+    = "da" { Factors.Deca }
+    / "h"  { Factors.Hecto }
+    / "k"  { Factors.Kilo }
+    / "M"  { Factors.Mega }
+    / "G"  { Factors.Giga }
+    / "T"  { Factors.Tera }
+    / "P"  { Factors.Peta }
+    / "E"  { Factors.Exa }
+    / "Z"  { Factors.Zetta }
+    / "Y"  { Factors.Yotta }
+    / "d"  { Factors.Deci }
+    / "c"  { Factors.Centi }
+    / "m"  { Factors.Milli }
+    / "μ"  { Factors.Micro }
+    / "n"  { Factors.Nano }
+    / "p"  { Factors.Pico }
+    / "f"  { Factors.Femto }
+    / "a"  { Factors.Atto }
+    / "z"  { Factors.Zepto }
+    / "y"  { Factors.Yocto }
+
+siPrefix <NumberFactor>
+    = "deca"i  { Factors.Deca }
+    / "hecto"i { Factors.Hecto }
+    / "kilo"i  { Factors.Kilo }
+    / "mega"i  { Factors.Mega }
+    / "giga"i  { Factors.Giga }
+    / "tera"i  { Factors.Tera }
+    / "peta"i  { Factors.Peta }
+    / "exa"i   { Factors.Exa }
+    / "zetta"i { Factors.Zetta }
+    / "yotta"i { Factors.Yotta }
+    / "deci"i  { Factors.Deci }
+    / "centi"i { Factors.Centi }
+    / "milli"i { Factors.Milli }
+    / "micro"i { Factors.Micro }
+    / "nano"i  { Factors.Nano }
+    / "pico"i  { Factors.Pico }
+    / "femto"i { Factors.Femto }
+    / "atto"i  { Factors.Atto }
+    / "zepto"i { Factors.Zepto }
+    / "yocto"i { Factors.Yocto }
+
+siUnitSymbol <Factor>
+    = "m"   { Factors.Meter }
+    / "g"   { Factors.Gram }
+    / "s"   { Factors.Second }
+    / "A"   { Factors.Ampere }
+    / "K"   { Factors.Kelvin }
+    / "mol" { Factors.Mole }
+    / "cd"  { Factors.Candela }
+    / "Hz"  { Factors.Hertz }
+    / "N"   { Factors.Newton }
+    / "Pa"  { Factors.Pascal }
+    / "J"   { Factors.Joule }
+    / "W"   { Factors.Watt }
+    / "C"   { Factors.Coulomb }
+    / "V"   { Factors.Volt }
+    / "F"   { Factors.Farad }
+    / "Ω"   { Factors.Ohm }
+    / "S"   { Factors.Siemens }
+    / "Wb"  { Factors.Weber }
+    / "T"   { Factors.Tesla }
+    / "H"   { Factors.Henry }
+
+siUnitName <Factor>
+    = "meter"i   { Factors.Meter }
+    / "metre"i   { Factors.Meter }
+    / "gram"i    { Factors.Gram }
+    / "second"i  { Factors.Second }
+    / "ampere"i  { Factors.Ampere }
+    / "kelvin"i  { Factors.Kelvin }
+    / "mole"i    { Factors.Mole }
+    / "candela"i { Factors.Candela }
+    / "hertz"i   { Factors.Hertz }
+    / "newton"i  { Factors.Newton }
+    / "pascal"i  { Factors.Pascal }
+    / "joule"i   { Factors.Joule }
+    / "watt"i    { Factors.Watt }
+    / "coulomb"i { Factors.Coulomb }
+    / "volt"i    { Factors.Volt }
+    / "farad"i   { Factors.Farad }
+    / "ohm"i     { Factors.Ohm }
+    / "siemens"i { Factors.Siemens }
+    / "weber"i   { Factors.Weber }
+    / "tesla"i   { Factors.Tesla }
+    / "henry"i   { Factors.Henry }
+
+nameFactor <NameFactor>
+    = n:name { new NameFactor(n) }
+
+name
+    = "" [a-zA-Z]+
+
+int <int>
+    = negative:[-−]? digits:("" [0-9]+) { negative.Count == 0 ? int.Parse(digits) : -int.Parse(digits) }
+
+_   = "" WS?
+WS  = "" [ \t\v\f\u00A0\uFEFF\u1680\u180E\u2000-\u200A\u202F\u205F\u3000]+
+EOF = !.

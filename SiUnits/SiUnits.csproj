@@ -12,6 +12,7 @@
     <PackageProjectUrl>https://github.com/otac0n/SiUnits</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
+    <PegGrammar Include="Parser.peg" />
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
     <AdditionalFiles Include="SiUnits.ruleset" />
   </ItemGroup>
@@ -19,6 +20,7 @@
     <PackageReference Include="FixMe" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.6.0" PrivateAssets="All" />
+    <PackageReference Include="Pegasus" Version="4.1.0-alpha0031" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta006" PrivateAssets="All" />
   </ItemGroup>
 </Project>
