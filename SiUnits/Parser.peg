@@ -94,27 +94,28 @@ siUnitSymbol <Factor>
     / "H"   { Factors.Henry }
 
 siUnitName <Factor>
-    = "meter"i   { Factors.Meter }
-    / "metre"i   { Factors.Meter }
-    / "gram"i    { Factors.Gram }
-    / "second"i  { Factors.Second }
-    / "ampere"i  { Factors.Ampere }
-    / "kelvin"i  { Factors.Kelvin }
-    / "mole"i    { Factors.Mole }
-    / "candela"i { Factors.Candela }
-    / "hertz"i   { Factors.Hertz }
-    / "newton"i  { Factors.Newton }
-    / "pascal"i  { Factors.Pascal }
-    / "joule"i   { Factors.Joule }
-    / "watt"i    { Factors.Watt }
-    / "coulomb"i { Factors.Coulomb }
-    / "volt"i    { Factors.Volt }
-    / "farad"i   { Factors.Farad }
-    / "ohm"i     { Factors.Ohm }
-    / "siemens"i { Factors.Siemens }
-    / "weber"i   { Factors.Weber }
-    / "tesla"i   { Factors.Tesla }
-    / "henry"i   { Factors.Henry }
+    = "meter"i "s"i?   { Factors.Meter }
+    / "metre"i "s"i?   { Factors.Meter }
+    / "gram"i "s"i?    { Factors.Gram }
+    / "second"i "s"i?  { Factors.Second }
+    / "ampere"i "s"i?  { Factors.Ampere }
+    / "kelvin"i        { Factors.Kelvin }
+    / "mole"i "s"i?    { Factors.Mole }
+    / "candela"i "s"i? { Factors.Candela }
+    / "hertz"i         { Factors.Hertz }
+    / "newton"i "s"i?  { Factors.Newton }
+    / "pascal"i "s"i?  { Factors.Pascal }
+    / "joule"i "s"i?   { Factors.Joule }
+    / "watt"i "s"i?    { Factors.Watt }
+    / "coulomb"i "s"i? { Factors.Coulomb }
+    / "volt"i "s"i?    { Factors.Volt }
+    / "farad"i "s"i?   { Factors.Farad }
+    / "ohm"i "s"i?     { Factors.Ohm }
+    / "siemens"i       { Factors.Siemens }
+    / "weber"i "s"i?   { Factors.Weber }
+    / "tesla"i "s"i?   { Factors.Tesla }
+    / "henry"i         { Factors.Henry }
+    / "henries"i       { Factors.Henry }
 
 nameFactor <NameFactor>
     = n:name { new NameFactor(n) }
