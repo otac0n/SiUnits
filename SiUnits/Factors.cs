@@ -5,7 +5,7 @@ namespace SiUnits
     using System;
     using System.Linq;
 
-    internal static class Factors
+    public static class Factors
     {
         public static readonly NameFactor Ampere;
         public static readonly NumberFactor Atto;
