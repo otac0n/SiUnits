@@ -22,8 +22,17 @@ namespace SiUnits
             var values = new Dictionary<object, Factor>();
             foreach (var factor in factors)
             {
-                singleFactor[0] = factor;
-                var subFactors = singleFactor[0] is CompositeFactor composite ? composite.Factors : singleFactor.AsEnumerable();
+                IEnumerable<Factor> subFactors;
+                if (factor is CompositeFactor composite)
+                {
+                    subFactors = composite.Factors;
+                }
+                else
+                {
+                    singleFactor[0] = factor;
+                    subFactors = singleFactor;
+                }
+
                 foreach (var subFactor in subFactors)
                 {
                     switch (subFactor)
