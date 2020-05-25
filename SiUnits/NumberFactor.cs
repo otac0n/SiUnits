@@ -2,6 +2,8 @@
 
 namespace SiUnits
 {
+    using System;
+
     /// <summary>
     /// Represents a number factor.
     /// </summary>
@@ -10,11 +12,15 @@ namespace SiUnits
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberFactor"/> class.
         /// </summary>
-        /// <param name="number">The number being used as a factor.</param>
+        /// <param name="number">The positive number being used as a factor.</param>
         /// <param name="power">The power of this factor.</param>
-        public NumberFactor(int number, int power = 1)
+        public NumberFactor(double number, int power = 1)
         {
-            // TODO: Throw if zero is passed?
+            if (number <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(number));
+            }
+
             this.Number = number;
             this.Power = power;
         }
@@ -27,7 +33,7 @@ namespace SiUnits
         /// <summary>
         /// Gets the number being used as a factor.
         /// </summary>
-        public int Number { get; }
+        public double Number { get; }
 
         /// <summary>
         /// Gets the power of this factor.
