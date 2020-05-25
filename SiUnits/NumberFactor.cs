@@ -41,7 +41,10 @@ namespace SiUnits
         public int Power { get; }
 
         /// <inheritdoc />
-        public override Factor Pow(int power) => new NumberFactor(this.Number, this.Power * power);
+        public override Factor Pow(int power) =>
+            power == 1 ? this :
+            power == 0 || this.Number == 1 ? Unit :
+            new NumberFactor(this.Number, this.Power * power);
 
         /// <inheritdoc />
         public override string ToString() => this.Power == 1 ? $"{this.Number}" : $"{this.Number}^{this.Power}";

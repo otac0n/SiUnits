@@ -69,6 +69,8 @@ namespace SiUnits
 
         public static Units operator /(Units left, Units right) => new Units(left.Factors / right.Factors);
 
+        public Units Pow(int power) => power == 1 ? this : new Units(this.Factors.Pow(power));
+
         /// <inheritdoc />
         public override string ToString() => this.Factors.ToString();
     }
