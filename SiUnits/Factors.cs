@@ -112,19 +112,5 @@ namespace SiUnits
 
             throw new InvalidOperationException($"Could not convert factor of '{factor}' to a constant.");
         }
-
-        public static bool IsConstant(this Factor factor)
-        {
-            switch (factor)
-            {
-                case NumberFactor number:
-                    return true;
-
-                case CompositeFactor composite:
-                    return composite.Factors.All(IsConstant);
-            }
-
-            return false;
-        }
     }
 }

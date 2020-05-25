@@ -121,7 +121,7 @@ nameFactor <NameFactor>
     = n:name { new NameFactor(n) }
 
 name
-    = "" [a-zA-Z]+
+    = "" (c:. &{ char.IsLetter(c[0]) })+
 
 int <int>
     = negative:[-−]? digits:("" [0-9]+) { negative.Count == 0 ? int.Parse(digits) : -int.Parse(digits) }
