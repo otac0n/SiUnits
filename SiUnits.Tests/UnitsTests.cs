@@ -16,8 +16,8 @@ namespace SiUnits.Tests
         [Fact]
         public void Divide_WhenGiventDistanceAndTime_ReturnsSpeed()
         {
-            var distance = (Units)"m";
-            var time = (Units)"s";
+            var distance = Units.Meter;
+            var time = Units.Second;
             var speed = distance / time;
 
             Assert.Equal("meter*second^-1", speed.ToString());
@@ -27,7 +27,7 @@ namespace SiUnits.Tests
         public void Multiply_WhenGivenSpeedAndTime_ReturnsDistance()
         {
             var speed = (Units)"m/s";
-            var time = (Units)"s";
+            var time = Units.Second;
             var distance = speed * time;
 
             Assert.Equal("meter", distance.ToString());
