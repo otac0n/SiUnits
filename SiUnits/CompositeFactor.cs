@@ -2,6 +2,7 @@
 
 namespace SiUnits
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -25,50 +26,56 @@ namespace SiUnits
                 var subFactors = singleFactor[0] is CompositeFactor composite ? composite.Factors : singleFactor.AsEnumerable();
                 foreach (var subFactor in subFactors)
                 {
-                    if (subFactor is NameFactor name)
+                    switch (subFactor)
                     {
-                        if (name.Power != 0)
-                        {
-                            if (values.TryGetValue(name.Name, out var value))
+                        case NameFactor name:
+                            if (name.Power != 0)
                             {
-                                var newPower = ((NameFactor)value).Power + name.Power;
-                                if (newPower == 0)
+                                if (values.TryGetValue(name.Name, out var value))
                                 {
-                                    values.Remove(name.Name);
+                                    var newPower = ((NameFactor)value).Power + name.Power;
+                                    if (newPower == 0)
+                                    {
+                                        values.Remove(name.Name);
+                                    }
+                                    else
+                                    {
+                                        values[name.Name] = new NameFactor(name.Name, newPower);
+                                    }
                                 }
                                 else
                                 {
-                                    values[name.Name] = new NameFactor(name.Name, newPower);
+                                    values[name.Name] = name;
                                 }
                             }
-                            else
+
+                            break;
+
+                        case NumberFactor number:
+                            if (number.Number != 1 && number.Power != 0)
                             {
-                                values[name.Name] = name;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var number = (NumberFactor)subFactor;
-                        if (number.Number != 1 && number.Power != 0)
-                        {
-                            if (values.TryGetValue(number.Number, out var value))
-                            {
-                                var newPower = ((NumberFactor)value).Power + number.Power;
-                                if (newPower == 0)
+                                if (values.TryGetValue(number.Number, out var value))
                                 {
-                                    values.Remove(number.Number);
+                                    var newPower = ((NumberFactor)value).Power + number.Power;
+                                    if (newPower == 0)
+                                    {
+                                        values.Remove(number.Number);
+                                    }
+                                    else
+                                    {
+                                        values[number.Number] = new NumberFactor(number.Number, newPower);
+                                    }
                                 }
                                 else
                                 {
-                                    values[number.Number] = new NumberFactor(number.Number, newPower);
+                                    values[number.Number] = number;
                                 }
                             }
-                            else
-                            {
-                                values[number.Number] = number;
-                            }
-                        }
+
+                            break;
+
+                        default:
+                            throw new NotImplementedException();
                     }
                 }
             }
