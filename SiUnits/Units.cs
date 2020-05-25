@@ -59,7 +59,7 @@ namespace SiUnits
 
         public Factor Factors { get; }
 
-        public static implicit operator Units(string factors) => new Units(new Parser().Parse(factors));
+        public static explicit operator Units(string factors) => new Units(new Parser().Parse(factors));
 
         public static DoubleWithUnits operator *(double value, Units units) => new DoubleWithUnits(value, units);
 
