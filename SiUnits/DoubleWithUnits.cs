@@ -37,12 +37,14 @@ namespace SiUnits
         public static double operator /(DoubleWithUnits left, Units right)
         {
             var units = left.Units / right;
-            if (!units.Factors.IsConstant())
+            try
             {
-                throw new InvalidOperationException($"Could not convert units of '{units}' to a constant.");
+                return left.Value * units.Factors.AsConstant();
             }
-
-            return left.Value * units.Factors.AsConstant();
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException($"Could not convert units of '{units}' to a constant.", ex);
+            }
         }
 
         public override string ToString() => $"{this.Value} {this.Units}";
