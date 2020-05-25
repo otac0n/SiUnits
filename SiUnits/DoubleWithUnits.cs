@@ -19,8 +19,20 @@ namespace SiUnits
         public static DoubleWithUnits operator *(DoubleWithUnits left, DoubleWithUnits right) =>
             new DoubleWithUnits(left.Value * right.Value, left.Units * right.Units);
 
+        public static DoubleWithUnits operator *(DoubleWithUnits left, double right) =>
+            new DoubleWithUnits(left.Value * right, left.Units);
+
+        public static DoubleWithUnits operator *(double left, DoubleWithUnits right) =>
+            new DoubleWithUnits(left * right.Value, right.Units);
+
         public static DoubleWithUnits operator /(DoubleWithUnits left, DoubleWithUnits right) =>
             new DoubleWithUnits(left.Value / right.Value, left.Units / right.Units);
+
+        public static DoubleWithUnits operator /(DoubleWithUnits left, double right) =>
+            new DoubleWithUnits(left.Value / right, left.Units);
+
+        public static DoubleWithUnits operator /(double left, DoubleWithUnits right) =>
+            new DoubleWithUnits(left / right.Value, right.Units.Pow(-1));
 
         public static double operator /(DoubleWithUnits left, Units right)
         {
