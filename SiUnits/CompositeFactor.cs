@@ -10,7 +10,7 @@ namespace SiUnits
     /// <summary>
     /// Represents a factor made up of multiple component factors.
     /// </summary>
-    public class CompositeFactor : Factor
+    public sealed class CompositeFactor : Factor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeFactor"/> class.

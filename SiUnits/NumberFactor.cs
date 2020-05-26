@@ -7,7 +7,7 @@ namespace SiUnits
     /// <summary>
     /// Represents a number factor.
     /// </summary>
-    public class NumberFactor : Factor
+    public sealed class NumberFactor : Factor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberFactor"/> class.

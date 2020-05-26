@@ -5,7 +5,7 @@ namespace SiUnits
     /// <summary>
     /// Represents a factor of a named unit.
     /// </summary>
-    public class NameFactor : Factor
+    public sealed class NameFactor : Factor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NameFactor"/> class.
