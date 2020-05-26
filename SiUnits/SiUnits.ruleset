@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="SiUnits" Description="Rules for the SiUnits project." ToolsVersion="14.0">
+<RuleSet Name="SiUnits" Description="Rules for the SiUnits project." ToolsVersion="16.0">
   <Include Path="..\Strict.ruleset" Action="Default" />
 </RuleSet>
