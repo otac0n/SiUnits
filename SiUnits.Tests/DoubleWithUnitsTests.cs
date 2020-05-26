@@ -15,6 +15,19 @@ namespace SiUnits.Tests
         }
 
         [Fact]
+        public void Integration_DifferenceOfDistances()
+        {
+            var distanceA = 1 * (Units)"km";
+            var distanceB = 2 * (Units)"m";
+            var distanceC = 3 * (Units)"cm";
+            var expected = 1000000000000.0 - 2000000000.0 - 30000000.0;
+
+            var distanceInNano = (distanceA - distanceB - distanceC) / (Units)"nm";
+
+            Assert.Equal(expected, distanceInNano);
+        }
+
+        [Fact]
         public void Integration_SpeedEquation()
         {
             var speed = 10 * (Units)"m*s^-1";
@@ -32,10 +45,11 @@ namespace SiUnits.Tests
             var distanceA = 1 * (Units)"km";
             var distanceB = 2 * (Units)"m";
             var distanceC = 3 * (Units)"cm";
+            var expected = 1000000000000.0 + 2000000000.0 + 30000000.0;
 
             var distanceInNano = (distanceA + distanceB + distanceC) / (Units)"nm";
 
-            Assert.Equal(1002030000000.0, distanceInNano);
+            Assert.Equal(expected, distanceInNano);
         }
     }
 }

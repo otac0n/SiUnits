@@ -16,6 +16,9 @@ namespace SiUnits
 
         public double Value { get; }
 
+        public static DoubleWithUnits operator -(DoubleWithUnits left, DoubleWithUnits right) =>
+            new DoubleWithUnits(left.Value - right / left.Units, left.Units);
+
         public static DoubleWithUnits operator *(DoubleWithUnits left, DoubleWithUnits right) =>
             new DoubleWithUnits(left.Value * right.Value, left.Units * right.Units);
 
