@@ -1,9 +1,9 @@
 // Copyright © John Gietzen. All Rights Reserved. This source is subject to the MIT license. Please see license.md for more information.
 
-using System;
-
 namespace SiUnits
 {
+    using System;
+
     public struct DoubleWithUnits
     {
         public DoubleWithUnits(double value, Units units)
@@ -46,6 +46,9 @@ namespace SiUnits
                 throw new InvalidOperationException($"Could not convert units of '{units}' to a constant.", ex);
             }
         }
+
+        public static DoubleWithUnits operator +(DoubleWithUnits left, DoubleWithUnits right) =>
+            new DoubleWithUnits(left.Value + right / left.Units, left.Units);
 
         public override string ToString() => $"{this.Value} {this.Units}";
     }

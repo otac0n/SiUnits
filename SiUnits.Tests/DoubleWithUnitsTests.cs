@@ -25,5 +25,17 @@ namespace SiUnits.Tests
 
             Assert.Equal(200.0, timeInSeconds);
         }
+
+        [Fact]
+        public void Integration_SumOfDistances()
+        {
+            var distanceA = 1 * (Units)"km";
+            var distanceB = 2 * (Units)"m";
+            var distanceC = 3 * (Units)"cm";
+
+            var distanceInNano = (distanceA + distanceB + distanceC) / (Units)"nm";
+
+            Assert.Equal(1002030000000.0, distanceInNano);
+        }
     }
 }

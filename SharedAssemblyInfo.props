@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Authors>John Gietzen</Authors>
+    <Authors>John &amp; Katie Gietzen</Authors>
     <Copyright>Copyright © 2018-2020 $(Authors)</Copyright>
     <Product>SiUnits</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
