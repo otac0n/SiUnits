@@ -1,11 +1,19 @@
-// Copyright © John Gietzen. All Rights Reserved. This source is subject to the MIT license. Please see license.md for more information.
+// Copyright © John & Katie Gietzen. All Rights Reserved. This source is subject to the MIT license. Please see license.md for more information.
 
 namespace SiUnits.Tests
 {
+    using System;
     using Xunit;
 
     public class DoubleWithUnitsTests
     {
+        [Fact]
+        public void Divide_UnitsAreNotConstant_ThrowsInvalidOperationException()
+        {
+            var mass = 1 * Units.Kilogram;
+            Assert.Throws<InvalidOperationException>(() => mass / Units.One);
+        }
+
         [Fact]
         public void Divide_WhenUnitsDifferByAConstantFactor_ScalesTheValueByTheConstantFactor()
         {
