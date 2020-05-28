@@ -4,21 +4,22 @@ namespace SiUnits.Tests
 {
     using System;
     using Xunit;
+    using static Units;
 
     public class DoubleWithUnitsTests
     {
         [Fact]
         public void Divide_UnitsAreNotConstant_ThrowsInvalidOperationException()
         {
-            var mass = 1 * Units.Kilogram;
-            Assert.Throws<InvalidOperationException>(() => mass / Units.One);
+            var mass = 1 * Mass.Kilogram;
+            Assert.Throws<InvalidOperationException>(() => mass / Quantity.One);
         }
 
         [Fact]
         public void Divide_WhenUnitsDifferByAConstantFactor_ScalesTheValueByTheConstantFactor()
         {
-            var mass = 1 * Units.Kilogram;
-            var massInGrams = mass / Units.Gram;
+            var mass = 1 * Mass.Kilogram;
+            var massInGrams = mass / Mass.Gram;
             Assert.Equal(1000, massInGrams);
         }
 
@@ -39,10 +40,10 @@ namespace SiUnits.Tests
         public void Integration_SpeedEquation()
         {
             var speed = 10 * (Units)"m*s^-1";
-            var distance = 2 * Units.Kilometer;
+            var distance = 2 * (Kilo * Distance.Meter);
             var time = distance / speed;
 
-            var timeInSeconds = time / Units.Second;
+            var timeInSeconds = time / Time.Second;
 
             Assert.Equal(200.0, timeInSeconds);
         }

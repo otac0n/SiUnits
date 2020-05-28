@@ -90,7 +90,7 @@ namespace SiUnits
             }
 
             var result = values.Count == 0
-                ? new List<Factor> { SiUnits.Factors.Unit }
+                ? new List<Factor> { SiUnits.Factors.One }
                 : values.Values.ToList();
 
             this.Factors = result.AsReadOnly();

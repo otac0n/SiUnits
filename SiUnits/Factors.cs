@@ -34,6 +34,7 @@ namespace SiUnits
         public static readonly NumberFactor Nano;
         public static readonly Factor Newton;
         public static readonly Factor Ohm;
+        public static readonly NumberFactor One;
         public static readonly Factor Pascal;
         public static readonly NumberFactor Peta;
         public static readonly NumberFactor Pico;
@@ -41,7 +42,6 @@ namespace SiUnits
         public static readonly Factor Siemens;
         public static readonly NumberFactor Tera;
         public static readonly Factor Tesla;
-        public static readonly NumberFactor Unit;
         public static readonly Factor Volt;
         public static readonly Factor Watt;
         public static readonly Factor Weber;
@@ -52,7 +52,7 @@ namespace SiUnits
 
         static Factors()
         {
-            Unit = new NumberFactor(1, 1);
+            One = new NumberFactor(10, 0);
 
             Deca = new NumberFactor(10, 1);
             Hecto = new NumberFactor(10, 2);
