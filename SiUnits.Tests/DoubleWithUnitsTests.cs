@@ -39,7 +39,7 @@ namespace SiUnits.Tests
         [Fact]
         public void Integration_SpeedEquation()
         {
-            var speed = 10 * (Units)"m*s^-1";
+            var speed = 10 * (Units)"m/s";
             var distance = 2 * (Kilo * Distance.Meter);
             var time = distance / speed;
 
