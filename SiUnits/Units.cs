@@ -128,6 +128,11 @@ namespace SiUnits
             public static readonly Units Kilogram = new Units(SiUnits.Factors.Kilogram);
         }
 
+        public static class Physical
+        {
+            public static readonly Units JouleSeconds = Energy.Joule * Time.Second;
+        }
+
         public static class Power
         {
             public static readonly Units Watt = new Units(SiUnits.Factors.Watt);
@@ -153,6 +158,11 @@ namespace SiUnits
         public static class Time
         {
             public static readonly Units Second = new Units(SiUnits.Factors.Second);
+        }
+
+        public static class Velocity
+        {
+            public static readonly Units MetersPerSecond = Distance.Meter / Time.Second;
         }
     }
 }
