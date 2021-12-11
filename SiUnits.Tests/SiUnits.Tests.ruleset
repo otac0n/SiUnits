@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="SiUnits.Tests" Description="Rules for the SiUnits.Tests project" ToolsVersion="16.0">
-  <Include Path="..\Tests.ruleset" Action="Default" />
-</RuleSet>
