@@ -2,8 +2,10 @@
 
 namespace SiUnits
 {
+    using System;
+
     /// <summary>
-    /// The base clas for factors in SI Units.
+    /// The base class for factors in SI Units.
     /// </summary>
     public abstract class Factor
     {
@@ -25,7 +27,17 @@ namespace SiUnits
         /// <param name="left">The factor to divide.</param>
         /// <param name="right">The factor to divide by.</param>
         /// <returns>The combined factor.</returns>
-        public static Factor operator /(Factor left, Factor right) => Multiply(left, right.Pow(-1));
+        public static Factor operator /(Factor left, Factor right)
+        {
+            if (left == null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            var rightInverted = (right ?? throw new ArgumentNullException(nameof(right))).Pow(-1);
+
+            return Multiply(left, rightInverted);
+        }
 
         /// <summary>
         /// Multiplies a collection of factors.

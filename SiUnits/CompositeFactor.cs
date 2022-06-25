@@ -18,6 +18,11 @@ namespace SiUnits
         /// <param name="factors">The component factors that make up this composite factor.</param>
         public CompositeFactor(IEnumerable<Factor> factors)
         {
+            if (factors == null)
+            {
+                throw new ArgumentNullException(nameof(factors));
+            }
+
             var singleFactor = new Factor[1];
             var values = new Dictionary<object, Factor>();
             foreach (var factor in factors)

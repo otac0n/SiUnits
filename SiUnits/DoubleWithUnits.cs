@@ -4,16 +4,30 @@ namespace SiUnits
 {
     using System;
 
+    /// <summary>
+    /// Represents a scalar value with units attached.
+    /// </summary>
     public struct DoubleWithUnits
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DoubleWithUnits"/> struct.
+        /// </summary>
+        /// <param name="value">The scalar value.</param>
+        /// <param name="units">The attached units.</param>
         public DoubleWithUnits(double value, Units units)
         {
             this.Value = value;
-            this.Units = units;
+            this.Units = units ?? throw new ArgumentNullException(nameof(units));
         }
 
+        /// <summary>
+        /// Gets the attached units.
+        /// </summary>
         public Units Units { get; }
 
+        /// <summary>
+        /// Gets the scalar value.
+        /// </summary>
         public double Value { get; }
 
         public static DoubleWithUnits operator -(DoubleWithUnits left, DoubleWithUnits right) =>
@@ -53,6 +67,7 @@ namespace SiUnits
         public static DoubleWithUnits operator +(DoubleWithUnits left, DoubleWithUnits right) =>
             new DoubleWithUnits(left.Value + right / left.Units, left.Units);
 
+        /// <inheritdoc/>
         public override string ToString() => $"{this.Value} {this.Units}";
     }
 }

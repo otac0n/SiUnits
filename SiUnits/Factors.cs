@@ -3,6 +3,7 @@
 namespace SiUnits
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     public static class Factors
@@ -50,6 +51,7 @@ namespace SiUnits
         public static readonly NumberFactor Zepto;
         public static readonly NumberFactor Zetta;
 
+        [SuppressMessage("Performance", "CA1810:Initialize reference type static fields inline", Justification = "The order of field initialization is important.")]
         static Factors()
         {
             One = new NumberFactor(10, 0);
@@ -99,6 +101,12 @@ namespace SiUnits
             Henry = Weber / Ampere;
         }
 
+        /// <summary>
+        /// Converts the given factor into a constant value.  Only <see cref="NumberFactor">number factors</see> or <see cref="CompositeFactor">composite factors</see>
+        /// containing number factors are supported.  To convert a value with additional factors, divide by the expected units first.
+        /// </summary>
+        /// <param name="factor">The factor to convert to a constant.</param>
+        /// <returns>The simplified constant value.</returns>
         public static double AsConstant(this Factor factor)
         {
             switch (factor)
