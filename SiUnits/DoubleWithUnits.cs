@@ -7,14 +7,16 @@ namespace SiUnits
     /// <summary>
     /// Represents a scalar value with units attached.
     /// </summary>
-    public struct DoubleWithUnits
+    /// <typeparam name="T">The type of value with units attached.</typeparam>
+    public struct DoubleWithUnits<T>
+        where T : IFloatingPoint<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DoubleWithUnits"/> struct.
+        /// Initializes a new instance of the <see cref="DoubleWithUnits{T}"/> struct.
         /// </summary>
         /// <param name="value">The scalar value.</param>
         /// <param name="units">The attached units.</param>
-        public DoubleWithUnits(double value, Units units)
+        public DoubleWithUnits(T value, Units units)
         {
             this.Value = value;
             this.Units = units ?? throw new ArgumentNullException(nameof(units));
@@ -28,35 +30,35 @@ namespace SiUnits
         /// <summary>
         /// Gets the scalar value.
         /// </summary>
-        public double Value { get; }
+        public T Value { get; }
 
-        public static DoubleWithUnits operator -(DoubleWithUnits left, DoubleWithUnits right) =>
-            new DoubleWithUnits(left.Value - right / left.Units, left.Units);
+        public static DoubleWithUnits<T> operator -(DoubleWithUnits<T> left, DoubleWithUnits<T> right) =>
+            new DoubleWithUnits<T>(left.Value - right / left.Units, left.Units);
 
-        public static DoubleWithUnits operator *(DoubleWithUnits left, DoubleWithUnits right) =>
-            new DoubleWithUnits(left.Value * right.Value, left.Units * right.Units);
+        public static DoubleWithUnits<T> operator *(DoubleWithUnits<T> left, DoubleWithUnits<T> right) =>
+            new DoubleWithUnits<T>(left.Value * right.Value, left.Units * right.Units);
 
-        public static DoubleWithUnits operator *(DoubleWithUnits left, double right) =>
-            new DoubleWithUnits(left.Value * right, left.Units);
+        public static DoubleWithUnits<T> operator *(DoubleWithUnits<T> left, T right) =>
+            new DoubleWithUnits<T>(left.Value * right, left.Units);
 
-        public static DoubleWithUnits operator *(double left, DoubleWithUnits right) =>
-            new DoubleWithUnits(left * right.Value, right.Units);
+        public static DoubleWithUnits<T> operator *(T left, DoubleWithUnits<T> right) =>
+            new DoubleWithUnits<T>(left * right.Value, right.Units);
 
-        public static DoubleWithUnits operator /(DoubleWithUnits left, DoubleWithUnits right) =>
-            new DoubleWithUnits(left.Value / right.Value, left.Units / right.Units);
+        public static DoubleWithUnits<T> operator /(DoubleWithUnits<T> left, DoubleWithUnits<T> right) =>
+            new DoubleWithUnits<T>(left.Value / right.Value, left.Units / right.Units);
 
-        public static DoubleWithUnits operator /(DoubleWithUnits left, double right) =>
-            new DoubleWithUnits(left.Value / right, left.Units);
+        public static DoubleWithUnits<T> operator /(DoubleWithUnits<T> left, T right) =>
+            new DoubleWithUnits<T>(left.Value / right, left.Units);
 
-        public static DoubleWithUnits operator /(double left, DoubleWithUnits right) =>
-            new DoubleWithUnits(left / right.Value, right.Units.Pow(-1));
+        public static DoubleWithUnits<T> operator /(T left, DoubleWithUnits<T> right) =>
+            new DoubleWithUnits<T>(left / right.Value, right.Units.Pow(-1));
 
-        public static double operator /(DoubleWithUnits left, Units right)
+        public static T operator /(DoubleWithUnits<T> left, Units right)
         {
             var units = left.Units / right;
             try
             {
-                return left.Value * units.Factors.AsConstant();
+                return left.Value * T.Create(units.Factors.AsConstant());
             }
             catch (InvalidOperationException ex)
             {
@@ -64,8 +66,8 @@ namespace SiUnits
             }
         }
 
-        public static DoubleWithUnits operator +(DoubleWithUnits left, DoubleWithUnits right) =>
-            new DoubleWithUnits(left.Value + right / left.Units, left.Units);
+        public static DoubleWithUnits<T> operator +(DoubleWithUnits<T> left, DoubleWithUnits<T> right) =>
+            new DoubleWithUnits<T>(left.Value + right / left.Units, left.Units);
 
         /// <inheritdoc/>
         public override string ToString() => $"{this.Value} {this.Units}";
