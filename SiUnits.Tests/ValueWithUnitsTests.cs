@@ -6,7 +6,7 @@ namespace SiUnits.Tests
     using Xunit;
     using static Units;
 
-    public class DoubleWithUnitsTests
+    public class ValueWithUnitsTests
     {
         [Fact]
         public void Divide_UnitsAreNotConstant_ThrowsInvalidOperationException()

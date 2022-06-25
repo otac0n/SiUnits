@@ -48,7 +48,7 @@ namespace SiUnits
 
         public static explicit operator Units(string factors) => new Units(new Parser().Parse(factors));
 
-        public static DoubleWithUnits operator *(double value, Units units) => new DoubleWithUnits(value, units);
+        public static ValueWithUnits operator *(double value, Units units) => new ValueWithUnits(value, units);
 
         public static Units operator *(Units left, Units right)
         {
@@ -58,10 +58,10 @@ namespace SiUnits
             return new Units(leftFactors * rightFactors);
         }
 
-        public static DoubleWithUnits operator /(double value, Units units)
+        public static ValueWithUnits operator /(double value, Units units)
         {
             var unitsFactors = (units ?? throw new ArgumentNullException(nameof(units))).Factors;
-            return new DoubleWithUnits(value, new Units(unitsFactors.Pow(-1)));
+            return new ValueWithUnits(value, new Units(unitsFactors.Pow(-1)));
         }
 
         public static Units operator /(Units left, Units right)
