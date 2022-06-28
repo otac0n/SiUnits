@@ -59,9 +59,28 @@ namespace SiUnits
         /// <returns>A simplified list of factors.</returns>
         public static List<Factor> SimplifyFactors(IEnumerable<Factor> factors)
         {
+            var groups = GroupFactors(factors);
+            var result = groups.Count == 0
+                ? new List<Factor> { Factors.One }
+                : groups.Values.ToList();
+            return result;
+        }
+
+        /// <summary>
+        /// Raises the factor to the specified power.
+        /// </summary>
+        /// <param name="power">The power to which this factor should be raised.</param>
+        /// <returns>A new factor equal to this factor raised to the specified power.</returns>
+        public abstract Factor Pow(int power);
+
+        /// <inheritdoc />
+        public abstract override string ToString();
+
+        protected static Dictionary<object, Factor> GroupFactors(IEnumerable<Factor> factors)
+        {
             var singleFactor = new Factor[1];
             var values = new Dictionary<object, Factor>();
-            foreach (var factor in factors)
+            foreach (var factor in factors ?? Array.Empty<Factor>())
             {
                 IEnumerable<Factor> subFactors;
                 if (factor is CompositeFactor composite)
@@ -130,20 +149,7 @@ namespace SiUnits
                 }
             }
 
-            var result = values.Count == 0
-                ? new List<Factor> { Factors.One }
-                : values.Values.ToList();
-            return result;
+            return values;
         }
-
-        /// <summary>
-        /// Raises the factor to the specified power.
-        /// </summary>
-        /// <param name="power">The power to which this factor should be raised.</param>
-        /// <returns>A new factor equal to this factor raised to the specified power.</returns>
-        public abstract Factor Pow(int power);
-
-        /// <inheritdoc />
-        public abstract override string ToString();
     }
 }
