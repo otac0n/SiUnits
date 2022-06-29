@@ -11,6 +11,11 @@ namespace SiUnits
     /// </summary>
     public abstract class Factor
     {
+        /// <summary>
+        /// The list of factors to use if an empty list of factors is provided.
+        /// </summary>
+        protected static readonly ReadOnlyCollection<Factor> EmptyFactorList = new List<Factor> { Factors.One }.AsReadOnly();
+
         internal Factor()
         {
         }
@@ -48,8 +53,10 @@ namespace SiUnits
         /// <returns>The multiplied factor.</returns>
         public static Factor Multiply(params Factor[] factors)
         {
-            var factor = new CompositeFactor(factors);
-            return factor.Factors.Count == 1 ? factor.Factors[0] : factor;
+            var factorGroups = GroupFactors(factors);
+            return factorGroups.Count == 1
+                ? factorGroups.Values.Single()
+                : new CompositeFactor(factorGroups);
         }
 
         /// <summary>
@@ -57,12 +64,12 @@ namespace SiUnits
         /// </summary>
         /// <param name="factors">The collection of factors to simplify.</param>
         /// <returns>A simplified list of factors.</returns>
-        public static List<Factor> SimplifyFactors(IEnumerable<Factor> factors)
+        public static ReadOnlyCollection<Factor> SimplifyFactors(IEnumerable<Factor> factors)
         {
             var groups = GroupFactors(factors);
             var result = groups.Count == 0
-                ? new List<Factor> { Factors.One }
-                : groups.Values.ToList();
+                ? EmptyFactorList
+                : groups.Values.ToList().AsReadOnly();
             return result;
         }
 
@@ -76,6 +83,11 @@ namespace SiUnits
         /// <inheritdoc />
         public abstract override string ToString();
 
+        /// <summary>
+        /// Collapses a collection of factors into groups.
+        /// </summary>
+        /// <param name="factors">The collection of factors to simplify.</param>
+        /// <returns>A collection of grouped factors.</returns>
         protected static Dictionary<object, Factor> GroupFactors(IEnumerable<Factor> factors)
         {
             var singleFactor = new Factor[1];
@@ -144,7 +156,7 @@ namespace SiUnits
                             break;
 
                         default:
-                            throw new NotImplementedException();
+                            throw new InvalidOperationException();
                     }
                 }
             }

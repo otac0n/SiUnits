@@ -4,7 +4,7 @@ namespace SiUnits
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
+    using System.Collections.Immutable;
     using System.Linq;
 
     /// <summary>
@@ -12,19 +12,7 @@ namespace SiUnits
     /// </summary>
     public sealed class CompositeFactor : Factor
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CompositeFactor"/> class.
-        /// </summary>
-        /// <param name="factors">The component factors that make up this composite factor.</param>
-        public CompositeFactor(IEnumerable<Factor> factors)
-        {
-            if (factors == null)
-            {
-                throw new ArgumentNullException(nameof(factors));
-            }
-
-            this.Factors = SimplifyFactors(factors).AsReadOnly();
-        }
+        private readonly ImmutableDictionary<object, Factor> factors;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeFactor"/> class.
@@ -36,9 +24,25 @@ namespace SiUnits
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeFactor"/> class.
+        /// </summary>
+        /// <param name="factors">The component factors that make up this composite factor.</param>
+        public CompositeFactor(IEnumerable<Factor> factors)
+            : this(GroupFactors(factors ?? throw new ArgumentNullException(nameof(factors))))
+        {
+        }
+
+        internal CompositeFactor(IDictionary<object, Factor> groups)
+        {
+            this.factors = CoalesceEmptyGroupsToNull(groups)?.ToImmutableDictionary();
+        }
+
+        /// <summary>
         /// Gets the component factors that make up this composite factor.
         /// </summary>
-        public ReadOnlyCollection<Factor> Factors { get; }
+        public IEnumerable<Factor> Factors => this.factors?.Values ?? EmptyFactorList;
+
+        private static IDictionary<object, Factor> CoalesceEmptyGroupsToNull(IDictionary<object, Factor> groups) => groups?.Count > 0 ? groups : null;
 
         /// <inheritdoc />
         public override Factor Pow(int power) => new CompositeFactor(this.Factors.Select(f => f.Pow(power)));
