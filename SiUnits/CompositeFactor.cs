@@ -48,7 +48,12 @@ namespace SiUnits
         public override Factor Pow(int power) => new CompositeFactor(this.Factors.Select(f => f.Pow(power)));
 
         /// <inheritdoc />
-        public override string ToString() => string.Join("*", this.Factors.Select(f => f.ToString()).ToArray());
+        public override string ToString() =>
+            string.Join(
+                "*",
+                from f in this.factors
+                orderby f.Key is string, f.Key
+                select f.Value.ToString());
 
         /// <inheritdoc/>
         public override int GetHashCode() => this.Factors.Sum(f => f.GetHashCode());
