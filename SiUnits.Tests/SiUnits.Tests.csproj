@@ -5,6 +5,7 @@
     <DebugType>Full</DebugType>
     <IsPackable>false</IsPackable>
     <TargetFramework>net6.0</TargetFramework>
+    <EnablePreviewFeatures>true</EnablePreviewFeatures>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FixMe" Version="1.0.0" PrivateAssets="All" />
