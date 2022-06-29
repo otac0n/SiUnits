@@ -4,12 +4,13 @@ namespace SiUnits
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
 
     /// <summary>
     /// The base class for factors in SI Units.
     /// </summary>
-    public abstract class Factor
+    public abstract class Factor : IEquatable<Factor>
     {
         /// <summary>
         /// The list of factors to use if an empty list of factors is provided.
@@ -72,6 +73,15 @@ namespace SiUnits
                 : groups.Values.ToList().AsReadOnly();
             return result;
         }
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj) => obj is Factor other && this.Equals(other);
+
+        /// <inheritdoc/>
+        public abstract bool Equals(Factor other);
+
+        /// <inheritdoc/>
+        public abstract override int GetHashCode();
 
         /// <summary>
         /// Raises the factor to the specified power.

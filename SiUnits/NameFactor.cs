@@ -2,6 +2,8 @@
 
 namespace SiUnits
 {
+    using System;
+
     /// <summary>
     /// Represents a factor of a named unit.
     /// </summary>
@@ -33,5 +35,17 @@ namespace SiUnits
 
         /// <inheritdoc />
         public override string ToString() => this.Power == 1 ? this.Name : $"{this.Name}^{this.Power}";
+
+        /// <inheritdoc/>
+        public override int GetHashCode() =>
+            unchecked(this.Power * this.Name.GetHashCode(StringComparison.Ordinal));
+
+        /// <inheritdoc/>
+        public override bool Equals(Factor other) => other switch
+        {
+            NameFactor name => name.Name.Equals(this.Name, StringComparison.Ordinal),
+            CompositeFactor composite => composite.Equals(this),
+            _ => false,
+        };
     }
 }

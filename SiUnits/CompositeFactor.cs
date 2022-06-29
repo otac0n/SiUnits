@@ -49,5 +49,39 @@ namespace SiUnits
 
         /// <inheritdoc />
         public override string ToString() => string.Join("*", this.Factors.Select(f => f.ToString()).ToArray());
+
+        /// <inheritdoc/>
+        public override int GetHashCode() => this.Factors.Sum(f => f.GetHashCode());
+
+        /// <inheritdoc/>
+        public override bool Equals(Factor other) => other switch
+        {
+            CompositeFactor composite => Equals(this.factors, composite.factors),
+            _ => Equals(this.factors, CoalesceEmptyGroupsToNull(GroupFactors(new[] { other }))),
+        };
+
+        private static bool Equals(IDictionary<object, Factor> left, IDictionary<object, Factor> right)
+        {
+            if (object.ReferenceEquals(left, right))
+            {
+                return true;
+            }
+
+            if (left?.Count != right?.Count)
+            {
+                return false;
+            }
+
+            foreach (var kvp in left)
+            {
+                if (!right.TryGetValue(kvp.Key, out var value) ||
+                    !kvp.Value.Equals(value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }
