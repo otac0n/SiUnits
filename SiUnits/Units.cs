@@ -9,7 +9,7 @@ namespace SiUnits
     /// Represents a set of factors bound together as a unit.
     /// </summary>
     [DebuggerDisplay("{Factors}")]
-    public class Units
+    public class Units : IEquatable<Units>
     {
         public static readonly Units Atto = new Units(SiUnits.Factors.Atto);
         public static readonly Units Centi = new Units(SiUnits.Factors.Centi);
@@ -71,6 +71,24 @@ namespace SiUnits
 
             return new Units(leftFactors / rightFactors);
         }
+
+        public static bool operator ==(Units left, Units right) =>
+            left is Units ? left.Equals(right) : right is null;
+
+        public static bool operator !=(Units left, Units right) =>
+            !(left == right);
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj) =>
+            obj is Units other && this.Equals(other);
+
+        /// <inheritdoc/>
+        public bool Equals(Units other) =>
+            other is Units && this.Factors == other.Factors;
+
+        /// <inheritdoc/>
+        public override int GetHashCode() =>
+            this.Factors.GetHashCode();
 
         public Units Pow(int power) => power == 1 ? this : new Units(this.Factors.Pow(power));
 
