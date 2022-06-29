@@ -36,10 +36,25 @@ namespace SiUnits.Tests
         }
 
         [Theory]
+        [MemberData(nameof(VariousFactors))]
+        public void GetHashCode_WithAMatchingCompositeFactor_ReturnsTheSameValue(Factor factor)
+        {
+            var composite = new CompositeFactor(factor);
+            Assert.Equal(factor.GetHashCode(), composite.GetHashCode());
+        }
+
+        [Theory]
         [MemberData(nameof(GetEquivalentPairs))]
         public void Equals_WithAnEquivalentFactor_ReturnsTrue(Factor left, Factor right)
         {
             Assert.True(left.Equals(right));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetEquivalentPairs))]
+        public void GetHashCode_WithAnEquivalentFactor_ReturnsTheSameValue(Factor left, Factor right)
+        {
+            Assert.Equal(left.GetHashCode(), right.GetHashCode());
         }
     }
 }
