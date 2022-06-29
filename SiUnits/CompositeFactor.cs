@@ -4,7 +4,7 @@ namespace SiUnits
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
+    using System.Collections.Immutable;
     using System.Linq;
 
     /// <summary>
@@ -12,94 +12,7 @@ namespace SiUnits
     /// </summary>
     public sealed class CompositeFactor : Factor
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CompositeFactor"/> class.
-        /// </summary>
-        /// <param name="factors">The component factors that make up this composite factor.</param>
-        public CompositeFactor(IEnumerable<Factor> factors)
-        {
-            if (factors == null)
-            {
-                throw new ArgumentNullException(nameof(factors));
-            }
-
-            var singleFactor = new Factor[1];
-            var values = new Dictionary<object, Factor>();
-            foreach (var factor in factors)
-            {
-                IEnumerable<Factor> subFactors;
-                if (factor is CompositeFactor composite)
-                {
-                    subFactors = composite.Factors;
-                }
-                else
-                {
-                    singleFactor[0] = factor;
-                    subFactors = singleFactor;
-                }
-
-                foreach (var subFactor in subFactors)
-                {
-                    switch (subFactor)
-                    {
-                        case NameFactor name:
-                            if (name.Power != 0)
-                            {
-                                if (values.TryGetValue(name.Name, out var value))
-                                {
-                                    var newPower = ((NameFactor)value).Power + name.Power;
-                                    if (newPower == 0)
-                                    {
-                                        values.Remove(name.Name);
-                                    }
-                                    else
-                                    {
-                                        values[name.Name] = new NameFactor(name.Name, newPower);
-                                    }
-                                }
-                                else
-                                {
-                                    values[name.Name] = name;
-                                }
-                            }
-
-                            break;
-
-                        case NumberFactor number:
-                            if (number.Number != 1 && number.Power != 0)
-                            {
-                                if (values.TryGetValue(number.Number, out var value))
-                                {
-                                    var newPower = ((NumberFactor)value).Power + number.Power;
-                                    if (newPower == 0)
-                                    {
-                                        values.Remove(number.Number);
-                                    }
-                                    else
-                                    {
-                                        values[number.Number] = new NumberFactor(number.Number, newPower);
-                                    }
-                                }
-                                else
-                                {
-                                    values[number.Number] = number;
-                                }
-                            }
-
-                            break;
-
-                        default:
-                            throw new NotImplementedException();
-                    }
-                }
-            }
-
-            var result = values.Count == 0
-                ? new List<Factor> { SiUnits.Factors.One }
-                : values.Values.ToList();
-
-            this.Factors = result.AsReadOnly();
-        }
+        private readonly ImmutableDictionary<object, Factor> factors;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeFactor"/> class.
@@ -111,14 +24,69 @@ namespace SiUnits
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeFactor"/> class.
+        /// </summary>
+        /// <param name="factors">The component factors that make up this composite factor.</param>
+        public CompositeFactor(IEnumerable<Factor> factors)
+            : this(GroupFactors(factors ?? throw new ArgumentNullException(nameof(factors))))
+        {
+        }
+
+        internal CompositeFactor(IDictionary<object, Factor> groups)
+        {
+            this.factors = CoalesceEmptyGroupsToNull(groups)?.ToImmutableDictionary();
+        }
+
+        /// <summary>
         /// Gets the component factors that make up this composite factor.
         /// </summary>
-        public ReadOnlyCollection<Factor> Factors { get; }
+        public IEnumerable<Factor> Factors => this.factors?.Values ?? EmptyFactorList;
+
+        private static IDictionary<object, Factor> CoalesceEmptyGroupsToNull(IDictionary<object, Factor> groups) => groups?.Count > 0 ? groups : null;
 
         /// <inheritdoc />
         public override Factor Pow(int power) => new CompositeFactor(this.Factors.Select(f => f.Pow(power)));
 
         /// <inheritdoc />
-        public override string ToString() => string.Join("*", this.Factors.Select(f => f.ToString()).ToArray());
+        public override string ToString() =>
+            string.Join(
+                "*",
+                from f in this.factors
+                orderby f.Key is string, f.Key
+                select f.Value.ToString());
+
+        /// <inheritdoc/>
+        public override int GetHashCode() => this.Factors.Sum(f => f.GetHashCode());
+
+        /// <inheritdoc/>
+        public override bool Equals(Factor other) => other switch
+        {
+            CompositeFactor composite => Equals(this.factors, composite.factors),
+            _ => Equals(this.factors, CoalesceEmptyGroupsToNull(GroupFactors(new[] { other }))),
+        };
+
+        private static bool Equals(IDictionary<object, Factor> left, IDictionary<object, Factor> right)
+        {
+            if (object.ReferenceEquals(left, right))
+            {
+                return true;
+            }
+
+            if (left?.Count != right?.Count)
+            {
+                return false;
+            }
+
+            foreach (var kvp in left)
+            {
+                if (!right.TryGetValue(kvp.Key, out var value) ||
+                    !kvp.Value.Equals(value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

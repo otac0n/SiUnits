@@ -48,5 +48,16 @@ namespace SiUnits
 
         /// <inheritdoc />
         public override string ToString() => this.Power == 1 ? $"{this.Number}" : $"{this.Number}^{this.Power}";
+
+        /// <inheritdoc/>
+        public override int GetHashCode() => 0;
+
+        /// <inheritdoc/>
+        public override bool Equals(Factor other) => other switch
+        {
+            NumberFactor number => number.Number.Equals(this.Number),
+            CompositeFactor composite => composite.Equals(this),
+            _ => false,
+        };
     }
 }

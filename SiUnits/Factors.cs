@@ -107,18 +107,11 @@ namespace SiUnits
         /// </summary>
         /// <param name="factor">The factor to convert to a constant.</param>
         /// <returns>The simplified constant value.</returns>
-        public static double AsConstant(this Factor factor)
+        public static double AsConstant(this Factor factor) => factor switch
         {
-            switch (factor)
-            {
-                case NumberFactor number:
-                    return Math.Pow(number.Number, number.Power);
-
-                case CompositeFactor composite:
-                    return composite.Factors.Select(f => f.AsConstant()).Aggregate((a, b) => a * b);
-            }
-
-            throw new InvalidOperationException($"Could not convert factor of '{factor}' to a constant.");
-        }
+            NumberFactor number => Math.Pow(number.Number, number.Power),
+            CompositeFactor composite => composite.Factors.Select(f => f.AsConstant()).Aggregate((a, b) => a * b),
+            _ => throw new InvalidOperationException($"Could not convert factor of '{factor}' to a constant."),
+        };
     }
 }
