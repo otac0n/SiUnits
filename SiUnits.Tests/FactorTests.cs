@@ -20,6 +20,7 @@ namespace SiUnits.Tests
             new object[] { new CompositeFactor(Factors.One, new CompositeFactor(Factors.Kilo, Factors.Second)) },
             new object[] { new CompositeFactor(Factors.Deca, Factors.Hecto, Factors.Second) },
             new object[] { new CompositeFactor(new CompositeFactor(Factors.Deca, new NumberFactor(10)), new CompositeFactor(Factors.Deca, Factors.Second)) },
+            new object[] { new CompositeFactor(new NumberFactor(2, 2), new NumberFactor(5, 2), new NumberFactor(10), Factors.Second) },
         };
 
         public static IEnumerable<object[]> GetEquivalentPairs() =>
