@@ -39,6 +39,10 @@ namespace SiUnits
         public static readonly Factor Pascal;
         public static readonly NumberFactor Peta;
         public static readonly NumberFactor Pico;
+        public static readonly NumberFactor Quecto;
+        public static readonly NumberFactor Quetta;
+        public static readonly NumberFactor Ronna;
+        public static readonly NumberFactor Ronto;
         public static readonly NameFactor Second;
         public static readonly Factor Siemens;
         public static readonly NumberFactor Tera;
@@ -66,6 +70,8 @@ namespace SiUnits
             Exa = new NumberFactor(10, 18);
             Zetta = new NumberFactor(10, 21);
             Yotta = new NumberFactor(10, 24);
+            Ronna = new NumberFactor(10, 27);
+            Quetta = new NumberFactor(10, 30);
             Deci = new NumberFactor(10, -1);
             Centi = new NumberFactor(10, -2);
             Milli = new NumberFactor(10, -3);
@@ -76,6 +82,8 @@ namespace SiUnits
             Atto = new NumberFactor(10, -18);
             Zepto = new NumberFactor(10, -21);
             Yocto = new NumberFactor(10, -24);
+            Ronto = new NumberFactor(10, -27);
+            Quecto = new NumberFactor(10, -30);
 
             Ampere = new NameFactor("ampere");
             Candela = new NameFactor("candela");

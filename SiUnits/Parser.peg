@@ -38,6 +38,8 @@ siPrefixSymbol <NumberFactor>
     / "E"  { Factors.Exa }
     / "Z"  { Factors.Zetta }
     / "Y"  { Factors.Yotta }
+    / "R"  { Factors.Ronna }
+    / "Q"  { Factors.Quetta }
     / "d"  { Factors.Deci }
     / "c"  { Factors.Centi }
     / "m"  { Factors.Milli }
@@ -48,28 +50,34 @@ siPrefixSymbol <NumberFactor>
     / "a"  { Factors.Atto }
     / "z"  { Factors.Zepto }
     / "y"  { Factors.Yocto }
+    / "r"  { Factors.Ronto }
+    / "q"  { Factors.Quecto }
 
 siPrefix <NumberFactor>
-    = "deca"i  { Factors.Deca }
-    / "hecto"i { Factors.Hecto }
-    / "kilo"i  { Factors.Kilo }
-    / "mega"i  { Factors.Mega }
-    / "giga"i  { Factors.Giga }
-    / "tera"i  { Factors.Tera }
-    / "peta"i  { Factors.Peta }
-    / "exa"i   { Factors.Exa }
-    / "zetta"i { Factors.Zetta }
-    / "yotta"i { Factors.Yotta }
-    / "deci"i  { Factors.Deci }
-    / "centi"i { Factors.Centi }
-    / "milli"i { Factors.Milli }
-    / "micro"i { Factors.Micro }
-    / "nano"i  { Factors.Nano }
-    / "pico"i  { Factors.Pico }
-    / "femto"i { Factors.Femto }
-    / "atto"i  { Factors.Atto }
-    / "zepto"i { Factors.Zepto }
-    / "yocto"i { Factors.Yocto }
+    = "deca"i   { Factors.Deca }
+    / "hecto"i  { Factors.Hecto }
+    / "kilo"i   { Factors.Kilo }
+    / "mega"i   { Factors.Mega }
+    / "giga"i   { Factors.Giga }
+    / "tera"i   { Factors.Tera }
+    / "peta"i   { Factors.Peta }
+    / "exa"i    { Factors.Exa }
+    / "zetta"i  { Factors.Zetta }
+    / "yotta"i  { Factors.Yotta }
+    / "ronna"i  { Factors.Ronna }
+    / "quetta"i { Factors.Quetta }
+    / "deci"i   { Factors.Deci }
+    / "centi"i  { Factors.Centi }
+    / "milli"i  { Factors.Milli }
+    / "micro"i  { Factors.Micro }
+    / "nano"i   { Factors.Nano }
+    / "pico"i   { Factors.Pico }
+    / "femto"i  { Factors.Femto }
+    / "atto"i   { Factors.Atto }
+    / "zepto"i  { Factors.Zepto }
+    / "yocto"i  { Factors.Yocto }
+    / "ronto"i  { Factors.Ronto }
+    / "quecto"i { Factors.Quecto }
 
 siUnitSymbol <Factor>
     = "m"   { Factors.Meter }
