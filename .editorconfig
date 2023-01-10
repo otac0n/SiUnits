@@ -89,5 +89,5 @@ dotnet_diagnostic.SA1602.severity = none
 dotnet_diagnostic.SA1629.severity = warning
 dotnet_diagnostic.SA1652.severity = none
 
-[*.{csproj,xml,yml,yaml,json,config,props,targets,ruleset}]
+[*.{csproj,xml,yml,yaml,json,config,props,targets}]
 indent_size = 2
