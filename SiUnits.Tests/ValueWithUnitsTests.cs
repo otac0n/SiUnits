@@ -6,23 +6,23 @@ namespace SiUnits.Tests
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
+    using static Factors<double>;
+    using static Units<double>;
     using CompositeFactor = SiUnits.CompositeFactor<double>;
     using Factor = SiUnits.Factor<double>;
     using Factors = SiUnits.Factors<double>;
     using NumberFactor = SiUnits.NumberFactor<double>;
-    using static Factors<double>;
-    using static Units<double>;
 
     public class ValueWithUnitsTests
     {
         public static readonly object[][] EquivalentFactors =
         {
-            new object[] { new CompositeFactor(Factors.Kilo, Factors.Second) },
-            new object[] { new CompositeFactor(new CompositeFactor(Factors.Kilo), new CompositeFactor(Factors.Second)) },
-            new object[] { new CompositeFactor(Factors.One, new CompositeFactor(Factors.Kilo, Factors.Second)) },
-            new object[] { new CompositeFactor(Factors.Deca, Factors.Hecto, Factors.Second) },
-            new object[] { new CompositeFactor(new CompositeFactor(Factors.Deca, new NumberFactor(10)), new CompositeFactor(Factors.Deca, Factors.Second)) },
-            new object[] { new CompositeFactor(new NumberFactor(2, 2), new NumberFactor(5, 2), new NumberFactor(10), Factors.Second) },
+            new object[] { new CompositeFactor(Kilo, Second) },
+            new object[] { new CompositeFactor(new CompositeFactor(Kilo), new CompositeFactor(Second)) },
+            new object[] { new CompositeFactor(One, new CompositeFactor(Kilo, Second)) },
+            new object[] { new CompositeFactor(Deca, Hecto, Second) },
+            new object[] { new CompositeFactor(new CompositeFactor(Deca, new NumberFactor(10)), new CompositeFactor(Deca, Second)) },
+            new object[] { new CompositeFactor(new NumberFactor(2, 2), new NumberFactor(5, 2), new NumberFactor(10), Second) },
         };
 
         public static IEnumerable<object[]> GetEquivalentFactorPairs() =>

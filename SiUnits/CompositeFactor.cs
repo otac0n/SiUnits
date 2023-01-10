@@ -45,8 +45,6 @@ namespace SiUnits
         /// </summary>
         public IEnumerable<Factor<T>> Factors => this.factors?.Values ?? EmptyFactorList;
 
-        private static IDictionary<object, Factor<T>> CoalesceEmptyGroupsToNull(IDictionary<object, Factor<T>> groups) => groups?.Count > 0 ? groups : null;
-
         /// <inheritdoc/>
         public override T AsConstant() => this.Factors.Select(f => f.AsConstant()).Aggregate((a, b) => a * b);
 
@@ -99,6 +97,8 @@ namespace SiUnits
             CompositeFactor<T> composite => Equals(this.factors, composite.factors),
             _ => Equals(this.factors, CoalesceEmptyGroupsToNull(GroupFactors(new[] { other }))),
         };
+
+        private static IDictionary<object, Factor<T>> CoalesceEmptyGroupsToNull(IDictionary<object, Factor<T>> groups) => groups?.Count > 0 ? groups : null;
 
         private static bool Equals(IDictionary<object, Factor<T>> left, IDictionary<object, Factor<T>> right)
         {

@@ -70,10 +70,8 @@ namespace SiUnits
         public static ValueWithUnits<T> operator +(ValueWithUnits<T> left, ValueWithUnits<T> right) =>
             new ValueWithUnits<T>(left.Value + right / left.Units, left.Units);
 
-        /// <inheritdoc/>
         public static bool operator ==(ValueWithUnits<T> left, ValueWithUnits<T> right) => left.Equals(right);
 
-        /// <inheritdoc/>
         public static bool operator !=(ValueWithUnits<T> left, ValueWithUnits<T> right) => !(left == right);
 
         /// <summary>
@@ -81,14 +79,14 @@ namespace SiUnits
         /// containing number units are supported.  To convert a value with additional units, divide by the expected units first.
         /// </summary>
         /// <returns>The constant numeric value.</returns>
-        public virtual T AsConstant() => this.Value * this.Units.AsConstant();
+        public T AsConstant() => this.Value * this.Units.AsConstant();
 
         /// <summary>
         /// Checks if the given value with units is a constant value.  Only <see cref="NumberFactor{T}">number units</see> or <see cref="CompositeFactor{T}">composite units</see>
         /// containing number units are supported.  To convert a value with additional units, divide by the expected units first.
         /// </summary>
         /// <returns>A boolean indicating if the factor is a constant numeric value.</returns>
-        public virtual bool IsConstant() => false;
+        public bool IsConstant() => false;
 
         /// <summary>
         /// Checks if the given value with units is a constant value.  Only <see cref="NumberFactor{T}">number units</see> or <see cref="CompositeFactor{T}">composite units</see>
@@ -96,7 +94,7 @@ namespace SiUnits
         /// </summary>
         /// <param name="value">A variable that will be set to the constant numeric value.</param>
         /// <returns>A boolean indicating if the factor is a constant numeric value.</returns>
-        public virtual bool IsConstant(out T value)
+        public bool IsConstant(out T value)
         {
             if (this.Units.IsConstant(out value))
             {
