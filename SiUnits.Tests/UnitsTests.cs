@@ -4,7 +4,8 @@ namespace SiUnits.Tests
 {
     using System;
     using Xunit;
-    using static Units<double>;
+    using static SiUnits.Units<double>;
+    using Units = SiUnits.Factor<double>;
 
     public class UnitsTests
     {
@@ -22,16 +23,16 @@ namespace SiUnits.Tests
 
         [Theory]
         [MemberData(nameof(ExpectedUnits))]
-        public void Convert_Always_ReturnsExpectedUnits(string input, Factor<double> expected)
+        public void Convert_Always_ReturnsExpectedUnits(string input, Units expected)
         {
-            var actual = (Factor<double>)input;
+            var actual = (Units)input;
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void Convert_WhenUnitsAreEmpty_ThrowsFormatException()
         {
-            Assert.Throws<FormatException>(() => (Factor<double>)"");
+            Assert.Throws<FormatException>(() => (Units)"");
         }
 
         [Fact]
@@ -47,7 +48,7 @@ namespace SiUnits.Tests
         [Fact]
         public void Multiply_WhenGivenSpeedAndTime_ReturnsDistance()
         {
-            var speed = (Factor<double>)"m/s";
+            var speed = (Units)"m/s";
             var time = Time.Second;
             var distance = speed * time;
 

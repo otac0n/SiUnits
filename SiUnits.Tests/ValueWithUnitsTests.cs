@@ -6,7 +6,8 @@ namespace SiUnits.Tests
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
-    using static Units<double>;
+    using static SiUnits.Units<double>;
+    using Units = SiUnits.Factor<double>;
 
     public class ValueWithUnitsTests
     {
@@ -33,12 +34,12 @@ namespace SiUnits.Tests
         [Fact]
         public void Integration_DifferenceOfDistances()
         {
-            var distanceA = 1 * (Factor<double>)"km";
-            var distanceB = 2 * (Factor<double>)"m";
-            var distanceC = 3 * (Factor<double>)"cm";
+            var distanceA = 1 * (Units)"km";
+            var distanceB = 2 * (Units)"m";
+            var distanceC = 3 * (Units)"cm";
             var expected = 1000000000000.0 - 2000000000.0 - 30000000.0;
 
-            var distanceInNano = (distanceA - distanceB - distanceC) / (Factor<double>)"nm";
+            var distanceInNano = (distanceA - distanceB - distanceC) / (Units)"nm";
 
             Assert.Equal(expected, distanceInNano);
         }
@@ -46,7 +47,7 @@ namespace SiUnits.Tests
         [Fact]
         public void Integration_SpeedEquation()
         {
-            var speed = 10 * (Factor<double>)"m/s";
+            var speed = 10 * (Units)"m/s";
             var distance = 2 * (Kilo * Distance.Meter);
             var time = distance / speed;
 
@@ -58,19 +59,19 @@ namespace SiUnits.Tests
         [Fact]
         public void Integration_SumOfDistances()
         {
-            var distanceA = 1 * (Factor<double>)"km";
-            var distanceB = 2 * (Factor<double>)"m";
-            var distanceC = 3 * (Factor<double>)"cm";
+            var distanceA = 1 * (Units)"km";
+            var distanceB = 2 * (Units)"m";
+            var distanceC = 3 * (Units)"cm";
             var expected = 1000000000000.0 + 2000000000.0 + 30000000.0;
 
-            var distanceInNano = (distanceA + distanceB + distanceC) / (Factor<double>)"nm";
+            var distanceInNano = (distanceA + distanceB + distanceC) / (Units)"nm";
 
             Assert.Equal(expected, distanceInNano);
         }
 
         [Theory]
         [MemberData(nameof(GetEquivalentFactorPairs))]
-        public void Equals_WithEquivalentFactors_ReturnsTrue(Factor<double> factorA, Factor<double> factorB)
+        public void Equals_WithEquivalentFactors_ReturnsTrue(Units factorA, Units factorB)
         {
             var a = 42.0 * factorA;
             var b = 42.0 * factorB;
