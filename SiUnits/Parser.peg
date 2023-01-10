@@ -2,7 +2,7 @@
 @classname Parser<T>
 @using System.Linq
 
-start <Factor<T>> = _ f:factor _ EOF { f }
+start <Factor<T>> -export -public = _ f:factor _ EOF { f }
 
 factor <Factor<T>> -memoize
     = left:factor (_ [*·⋅] _ / WS) right:power { left * right }

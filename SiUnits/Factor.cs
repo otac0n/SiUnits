@@ -5,6 +5,7 @@ namespace SiUnits
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Numerics;
 
@@ -12,7 +13,7 @@ namespace SiUnits
     /// The base class for factors in SI Units.
     /// </summary>
     /// <typeparam name="T">The underlying floating point representation for factors.</typeparam>
-    public abstract class Factor<T> : IEquatable<Factor<T>>
+    public abstract class Factor<T> : IEquatable<Factor<T>>, IParsable<Factor<T>>
         where T : IFloatingPoint<T>, IPowerFunctions<T>
     {
         /// <summary>
@@ -24,7 +25,7 @@ namespace SiUnits
         {
         }
 
-        public static explicit operator Factor<T>(string factors) => new Parser<T>().Parse(factors);
+        public static explicit operator Factor<T>(string factors) => Parse(factors);
 
         public static ValueWithUnits<T> operator *(T value, Factor<T> units) => new ValueWithUnits<T>(value, units);
 
@@ -141,6 +142,26 @@ namespace SiUnits
         /// <param name="power">The power to which this factor should be raised.</param>
         /// <returns>A new factor equal to this factor raised to the specified power.</returns>
         public abstract Factor<T> Pow(int power);
+
+        /// <inheritdoc/>
+        public static Factor<T> Parse(string s, IFormatProvider provider = null) => new Parser<T>().ParseStart(s);
+
+        /// <inheritdoc/>
+        public static bool TryParse([NotNullWhen(true)] string s, IFormatProvider provider, [MaybeNullWhen(false)] out Factor<T> result)
+        {
+            var cursor = new Pegasus.Common.Cursor(s);
+            var parseResult = new Parser<T>().Exported.Start(ref cursor);
+            if (parseResult != null)
+            {
+                result = parseResult.Value;
+                return true;
+            }
+            else
+            {
+                result = default;
+                return false;
+            }
+        }
 
         /// <inheritdoc />
         public abstract override string ToString();
