@@ -43,6 +43,19 @@ namespace SiUnits
         /// </summary>
         public int Power { get; }
 
+        /// <inheritdoc/>
+        public override T AsConstant() => T.Pow(this.Number, T.CreateChecked(this.Power));
+
+        /// <inheritdoc/>
+        public override bool IsConstant() => true;
+
+        /// <inheritdoc/>
+        public override bool IsConstant(out T value)
+        {
+            value = this.AsConstant();
+            return true;
+        }
+
         /// <inheritdoc />
         public override Factor<T> Pow(int power) =>
             power == 1 ? this :

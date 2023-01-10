@@ -47,6 +47,37 @@ namespace SiUnits
 
         private static IDictionary<object, Factor<T>> CoalesceEmptyGroupsToNull(IDictionary<object, Factor<T>> groups) => groups?.Count > 0 ? groups : null;
 
+        /// <inheritdoc/>
+        public override T AsConstant() => this.Factors.Select(f => f.AsConstant()).Aggregate((a, b) => a * b);
+
+        /// <inheritdoc/>
+        public override bool IsConstant() => this.Factors.All(f => f.IsConstant());
+
+        /// <inheritdoc/>
+        public override bool IsConstant(out T value)
+        {
+            using var e = this.Factors.GetEnumerator();
+            if (!e.MoveNext() || !e.Current.IsConstant(out value))
+            {
+                value = default;
+                return false;
+            }
+
+            while (e.MoveNext())
+            {
+                if (e.Current.IsConstant(out var innerValue))
+                {
+                    value *= innerValue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         /// <inheritdoc />
         public override Factor<T> Pow(int power) => new CompositeFactor<T>(this.Factors.Select(f => f.Pow(power)));
 

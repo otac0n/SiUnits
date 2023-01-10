@@ -101,14 +101,27 @@ namespace SiUnits
         /// Converts the given factor into a constant value.  Only <see cref="NumberFactor{T}">number factors</see> or <see cref="CompositeFactor{T}">composite factors</see>
         /// containing number factors are supported.  To convert a value with additional factors, divide by the expected units first.
         /// </summary>
-        /// <param name="factor">The factor to convert to a constant.</param>
-        /// <returns>The simplified constant value.</returns>
-        public T AsConstant() => this switch
+        /// <returns>The constant numeric value.</returns>
+        public virtual T AsConstant() => throw new InvalidOperationException($"Could not convert factor of '{this}' to a constant.");
+
+        /// <summary>
+        /// Checks if the given factor is a constant value.  Only <see cref="NumberFactor{T}">number factors</see> or <see cref="CompositeFactor{T}">composite factors</see>
+        /// containing number factors are supported.  To convert a value with additional factors, divide by the expected units first.
+        /// </summary>
+        /// <returns>A boolean indicating if the factor is a constant numeric value.</returns>
+        public virtual bool IsConstant() => false;
+
+        /// <summary>
+        /// Checks if the given factor is a constant value.  Only <see cref="NumberFactor{T}">number factors</see> or <see cref="CompositeFactor{T}">composite factors</see>
+        /// containing number factors are supported.  To convert a value with additional factors, divide by the expected units first.
+        /// </summary>
+        /// <param name="value">A variable that will be set to the constant numeric value.</param>
+        /// <returns>A boolean indicating if the factor is a constant numeric value.</returns>
+        public virtual bool IsConstant(out T value)
         {
-            NumberFactor<T> number => T.Pow(number.Number, T.CreateChecked(number.Power)),
-            CompositeFactor<T> composite => composite.Factors.Select(f => f.AsConstant()).Aggregate((a, b) => a * b),
-            _ => throw new InvalidOperationException($"Could not convert factor of '{this}' to a constant."),
-        };
+            value = default;
+            return false;
+        }
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => obj is Factor<T> other && this.Equals(other);

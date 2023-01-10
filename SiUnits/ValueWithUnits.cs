@@ -76,6 +76,37 @@ namespace SiUnits
         /// <inheritdoc/>
         public static bool operator !=(ValueWithUnits<T> left, ValueWithUnits<T> right) => !(left == right);
 
+        /// <summary>
+        /// Converts the value with units into a constant value.  Only <see cref="NumberFactor{T}">number units</see> or <see cref="CompositeFactor{T}">composite units</see>
+        /// containing number units are supported.  To convert a value with additional units, divide by the expected units first.
+        /// </summary>
+        /// <returns>The constant numeric value.</returns>
+        public virtual T AsConstant() => this.Value * this.Units.AsConstant();
+
+        /// <summary>
+        /// Checks if the given value with units is a constant value.  Only <see cref="NumberFactor{T}">number units</see> or <see cref="CompositeFactor{T}">composite units</see>
+        /// containing number units are supported.  To convert a value with additional units, divide by the expected units first.
+        /// </summary>
+        /// <returns>A boolean indicating if the factor is a constant numeric value.</returns>
+        public virtual bool IsConstant() => false;
+
+        /// <summary>
+        /// Checks if the given value with units is a constant value.  Only <see cref="NumberFactor{T}">number units</see> or <see cref="CompositeFactor{T}">composite units</see>
+        /// containing number units are supported.  To convert a value with additional units, divide by the expected units first.
+        /// </summary>
+        /// <param name="value">A variable that will be set to the constant numeric value.</param>
+        /// <returns>A boolean indicating if the factor is a constant numeric value.</returns>
+        public virtual bool IsConstant(out T value)
+        {
+            if (this.Units.IsConstant(out value))
+            {
+                value = this.Value * value;
+                return true;
+            }
+
+            return false;
+        }
+
         /// <inheritdoc/>
         public override bool Equals(object obj) => obj is ValueWithUnits<T> other && this.Equals(other);
 
