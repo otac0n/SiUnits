@@ -6,25 +6,10 @@ namespace SiUnits.Tests
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
-    using static Factors<double>;
     using static Units<double>;
-    using CompositeFactor = SiUnits.CompositeFactor<double>;
-    using Factor = SiUnits.Factor<double>;
-    using Factors = SiUnits.Factors<double>;
-    using NumberFactor = SiUnits.NumberFactor<double>;
 
     public class ValueWithUnitsTests
     {
-        public static readonly object[][] EquivalentFactors =
-        {
-            new object[] { new CompositeFactor(Kilo, Second) },
-            new object[] { new CompositeFactor(new CompositeFactor(Kilo), new CompositeFactor(Second)) },
-            new object[] { new CompositeFactor(One, new CompositeFactor(Kilo, Second)) },
-            new object[] { new CompositeFactor(Deca, Hecto, Second) },
-            new object[] { new CompositeFactor(new CompositeFactor(Deca, new NumberFactor(10)), new CompositeFactor(Deca, Second)) },
-            new object[] { new CompositeFactor(new NumberFactor(2, 2), new NumberFactor(5, 2), new NumberFactor(10), Second) },
-        };
-
         public static IEnumerable<object[]> GetEquivalentFactorPairs() =>
             from l in FactorTests.EquivalentFactors
             from r in FactorTests.EquivalentFactors
@@ -85,7 +70,7 @@ namespace SiUnits.Tests
 
         [Theory]
         [MemberData(nameof(GetEquivalentFactorPairs))]
-        public void Equals_WithEquivalentFactors_ReturnsTrue(Factor factorA, Factor factorB)
+        public void Equals_WithEquivalentFactors_ReturnsTrue(Factor<double> factorA, Factor<double> factorB)
         {
             var a = 42.0 * factorA;
             var b = 42.0 * factorB;

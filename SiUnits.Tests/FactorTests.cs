@@ -5,28 +5,28 @@ namespace SiUnits.Tests
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
+    using static Units<double>;
     using CompositeFactor = SiUnits.CompositeFactor<double>;
     using Factor = SiUnits.Factor<double>;
-    using Factors = SiUnits.Factors<double>;
     using NumberFactor = SiUnits.NumberFactor<double>;
 
     public class FactorTests
     {
         public static readonly object[][] VariousFactors =
         {
-            new object[] { Factors.Joule },
-            new object[] { Factors.Deci },
-            new object[] { new CompositeFactor(Factors.Femto, Factors.Farad) },
+            new object[] { Energy.Joule },
+            new object[] { Deci },
+            new object[] { Femto * ElectricalCapacitance.Farad },
         };
 
         public static readonly object[][] EquivalentFactors =
         {
-            new object[] { new CompositeFactor(Factors.Kilo, Factors.Second) },
-            new object[] { new CompositeFactor(new CompositeFactor(Factors.Kilo), new CompositeFactor(Factors.Second)) },
-            new object[] { new CompositeFactor(Factors.One, new CompositeFactor(Factors.Kilo, Factors.Second)) },
-            new object[] { new CompositeFactor(Factors.Deca, Factors.Hecto, Factors.Second) },
-            new object[] { new CompositeFactor(new CompositeFactor(Factors.Deca, new NumberFactor(10)), new CompositeFactor(Factors.Deca, Factors.Second)) },
-            new object[] { new CompositeFactor(new NumberFactor(2, 2), new NumberFactor(5, 2), new NumberFactor(10), Factors.Second) },
+            new object[] { new CompositeFactor(Kilo, Time.Second) },
+            new object[] { new CompositeFactor(new CompositeFactor(Kilo), new CompositeFactor(Time.Second)) },
+            new object[] { new CompositeFactor(Quantity.One, new CompositeFactor(Kilo, Time.Second)) },
+            new object[] { new CompositeFactor(Deca, Hecto, Time.Second) },
+            new object[] { new CompositeFactor(new CompositeFactor(Deca, new NumberFactor(10)), new CompositeFactor(Deca, Time.Second)) },
+            new object[] { new CompositeFactor(new NumberFactor(2, 2), new NumberFactor(5, 2), new NumberFactor(10), Time.Second) },
         };
 
         public static IEnumerable<object[]> GetEquivalentPairs() =>

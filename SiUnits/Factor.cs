@@ -19,7 +19,7 @@ namespace SiUnits
         /// <summary>
         /// The list of factors to use if an empty list of factors is provided.
         /// </summary>
-        protected static readonly ReadOnlyCollection<Factor<T>> EmptyFactorList = new List<Factor<T>> { Factors<T>.One }.AsReadOnly();
+        protected static readonly ReadOnlyCollection<Factor<T>> EmptyFactorList = new List<Factor<T>> { Units<T>.Quantity.One }.AsReadOnly();
 
         internal Factor()
         {
@@ -81,7 +81,7 @@ namespace SiUnits
             var factorGroups = GroupFactors(factors);
             return factorGroups switch
             {
-                { Count: 0 } => Factors<T>.One,
+                { Count: 0 } => Units<T>.Quantity.One,
                 { Count: 1 } => factorGroups.Values.Single(),
                 _ => new CompositeFactor<T>(factorGroups),
             };

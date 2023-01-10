@@ -29,102 +29,102 @@ siUnitFactor <Factor<T>>
     / n:siUnitName !name { n }
 
 siPrefixSymbol <NumberFactor<T>>
-    = "da" { Factors<T>.Deca }
-    / "h"  { Factors<T>.Hecto }
-    / "k"  { Factors<T>.Kilo }
-    / "M"  { Factors<T>.Mega }
-    / "G"  { Factors<T>.Giga }
-    / "T"  { Factors<T>.Tera }
-    / "P"  { Factors<T>.Peta }
-    / "E"  { Factors<T>.Exa }
-    / "Z"  { Factors<T>.Zetta }
-    / "Y"  { Factors<T>.Yotta }
-    / "R"  { Factors<T>.Ronna }
-    / "Q"  { Factors<T>.Quetta }
-    / "d"  { Factors<T>.Deci }
-    / "c"  { Factors<T>.Centi }
-    / "m"  { Factors<T>.Milli }
-    / "μ"  { Factors<T>.Micro }
-    / "n"  { Factors<T>.Nano }
-    / "p"  { Factors<T>.Pico }
-    / "f"  { Factors<T>.Femto }
-    / "a"  { Factors<T>.Atto }
-    / "z"  { Factors<T>.Zepto }
-    / "y"  { Factors<T>.Yocto }
-    / "r"  { Factors<T>.Ronto }
-    / "q"  { Factors<T>.Quecto }
+    = "da" { Units<T>.Deca }
+    / "h"  { Units<T>.Hecto }
+    / "k"  { Units<T>.Kilo }
+    / "M"  { Units<T>.Mega }
+    / "G"  { Units<T>.Giga }
+    / "T"  { Units<T>.Tera }
+    / "P"  { Units<T>.Peta }
+    / "E"  { Units<T>.Exa }
+    / "Z"  { Units<T>.Zetta }
+    / "Y"  { Units<T>.Yotta }
+    / "R"  { Units<T>.Ronna }
+    / "Q"  { Units<T>.Quetta }
+    / "d"  { Units<T>.Deci }
+    / "c"  { Units<T>.Centi }
+    / "m"  { Units<T>.Milli }
+    / "μ"  { Units<T>.Micro }
+    / "n"  { Units<T>.Nano }
+    / "p"  { Units<T>.Pico }
+    / "f"  { Units<T>.Femto }
+    / "a"  { Units<T>.Atto }
+    / "z"  { Units<T>.Zepto }
+    / "y"  { Units<T>.Yocto }
+    / "r"  { Units<T>.Ronto }
+    / "q"  { Units<T>.Quecto }
 
 siPrefix <NumberFactor<T>>
-    = "deca"i   { Factors<T>.Deca }
-    / "hecto"i  { Factors<T>.Hecto }
-    / "kilo"i   { Factors<T>.Kilo }
-    / "mega"i   { Factors<T>.Mega }
-    / "giga"i   { Factors<T>.Giga }
-    / "tera"i   { Factors<T>.Tera }
-    / "peta"i   { Factors<T>.Peta }
-    / "exa"i    { Factors<T>.Exa }
-    / "zetta"i  { Factors<T>.Zetta }
-    / "yotta"i  { Factors<T>.Yotta }
-    / "ronna"i  { Factors<T>.Ronna }
-    / "quetta"i { Factors<T>.Quetta }
-    / "deci"i   { Factors<T>.Deci }
-    / "centi"i  { Factors<T>.Centi }
-    / "milli"i  { Factors<T>.Milli }
-    / "micro"i  { Factors<T>.Micro }
-    / "nano"i   { Factors<T>.Nano }
-    / "pico"i   { Factors<T>.Pico }
-    / "femto"i  { Factors<T>.Femto }
-    / "atto"i   { Factors<T>.Atto }
-    / "zepto"i  { Factors<T>.Zepto }
-    / "yocto"i  { Factors<T>.Yocto }
-    / "ronto"i  { Factors<T>.Ronto }
-    / "quecto"i { Factors<T>.Quecto }
+    = "deca"i   { Units<T>.Deca }
+    / "hecto"i  { Units<T>.Hecto }
+    / "kilo"i   { Units<T>.Kilo }
+    / "mega"i   { Units<T>.Mega }
+    / "giga"i   { Units<T>.Giga }
+    / "tera"i   { Units<T>.Tera }
+    / "peta"i   { Units<T>.Peta }
+    / "exa"i    { Units<T>.Exa }
+    / "zetta"i  { Units<T>.Zetta }
+    / "yotta"i  { Units<T>.Yotta }
+    / "ronna"i  { Units<T>.Ronna }
+    / "quetta"i { Units<T>.Quetta }
+    / "deci"i   { Units<T>.Deci }
+    / "centi"i  { Units<T>.Centi }
+    / "milli"i  { Units<T>.Milli }
+    / "micro"i  { Units<T>.Micro }
+    / "nano"i   { Units<T>.Nano }
+    / "pico"i   { Units<T>.Pico }
+    / "femto"i  { Units<T>.Femto }
+    / "atto"i   { Units<T>.Atto }
+    / "zepto"i  { Units<T>.Zepto }
+    / "yocto"i  { Units<T>.Yocto }
+    / "ronto"i  { Units<T>.Ronto }
+    / "quecto"i { Units<T>.Quecto }
 
 siUnitSymbol <Factor<T>>
-    = "m"   { Factors<T>.Meter }
-    / "g"   { Factors<T>.Gram }
-    / "s"   { Factors<T>.Second }
-    / "A"   { Factors<T>.Ampere }
-    / "K"   { Factors<T>.Kelvin }
-    / "mol" { Factors<T>.Mole }
-    / "cd"  { Factors<T>.Candela }
-    / "Hz"  { Factors<T>.Hertz }
-    / "N"   { Factors<T>.Newton }
-    / "Pa"  { Factors<T>.Pascal }
-    / "J"   { Factors<T>.Joule }
-    / "W"   { Factors<T>.Watt }
-    / "C"   { Factors<T>.Coulomb }
-    / "V"   { Factors<T>.Volt }
-    / "F"   { Factors<T>.Farad }
-    / "Ω"   { Factors<T>.Ohm }
-    / "S"   { Factors<T>.Siemens }
-    / "Wb"  { Factors<T>.Weber }
-    / "T"   { Factors<T>.Tesla }
-    / "H"   { Factors<T>.Henry }
+    = "m"   { Units<T>.Distance.Meter }
+    / "g"   { Units<T>.Mass.Gram }
+    / "s"   { Units<T>.Time.Second }
+    / "A"   { Units<T>.ElectricCurrent.Ampere }
+    / "K"   { Units<T>.Temperature.Kelvin }
+    / "mol" { Units<T>.Quantity.Mole }
+    / "cd"  { Units<T>.LuminousIntensity.Candela }
+    / "Hz"  { Units<T>.Frequency.Hertz }
+    / "N"   { Units<T>.Force.Newton }
+    / "Pa"  { Units<T>.Pressure.Pascal }
+    / "J"   { Units<T>.Energy.Joule }
+    / "W"   { Units<T>.Power.Watt }
+    / "C"   { Units<T>.ElectricCharge.Coulomb }
+    / "V"   { Units<T>.ElectricPotential.Volt }
+    / "F"   { Units<T>.ElectricalCapacitance.Farad }
+    / "Ω"   { Units<T>.ElectricalResistance.Ohm }
+    / "S"   { Units<T>.ElectricConductance.Siemens }
+    / "Wb"  { Units<T>.MagneticFlux.Weber }
+    / "T"   { Units<T>.MagneticInductance.Tesla }
+    / "H"   { Units<T>.ElectricalInductance.Henry }
 
 siUnitName <Factor<T>>
-    = "meter"i "s"i?   { Factors<T>.Meter }
-    / "metre"i "s"i?   { Factors<T>.Meter }
-    / "gram"i "s"i?    { Factors<T>.Gram }
-    / "second"i "s"i?  { Factors<T>.Second }
-    / "ampere"i "s"i?  { Factors<T>.Ampere }
-    / "kelvin"i        { Factors<T>.Kelvin }
-    / "mole"i "s"i?    { Factors<T>.Mole }
-    / "candela"i "s"i? { Factors<T>.Candela }
-    / "hertz"i         { Factors<T>.Hertz }
-    / "newton"i "s"i?  { Factors<T>.Newton }
-    / "pascal"i "s"i?  { Factors<T>.Pascal }
-    / "joule"i "s"i?   { Factors<T>.Joule }
-    / "watt"i "s"i?    { Factors<T>.Watt }
-    / "coulomb"i "s"i? { Factors<T>.Coulomb }
-    / "volt"i "s"i?    { Factors<T>.Volt }
-    / "farad"i "s"i?   { Factors<T>.Farad }
-    / "ohm"i "s"i?     { Factors<T>.Ohm }
-    / "siemens"i       { Factors<T>.Siemens }
-    / "weber"i "s"i?   { Factors<T>.Weber }
-    / "tesla"i "s"i?   { Factors<T>.Tesla }
-    / "henry"i         { Factors<T>.Henry }
-    / "henries"i       { Factors<T>.Henry }
+    = "meter"i "s"i?   { Units<T>.Distance.Meter }
+    / "metre"i "s"i?   { Units<T>.Distance.Meter }
+    / "gram"i "s"i?    { Units<T>.Mass.Gram }
+    / "second"i "s"i?  { Units<T>.Time.Second }
+    / "ampere"i "s"i?  { Units<T>.ElectricCurrent.Ampere }
+    / "kelvin"i        { Units<T>.Temperature.Kelvin }
+    / "mole"i "s"i?    { Units<T>.Quantity.Mole }
+    / "candela"i "s"i? { Units<T>.LuminousIntensity.Candela }
+    / "hertz"i         { Units<T>.Frequency.Hertz }
+    / "newton"i "s"i?  { Units<T>.Force.Newton }
+    / "pascal"i "s"i?  { Units<T>.Pressure.Pascal }
+    / "joule"i "s"i?   { Units<T>.Energy.Joule }
+    / "watt"i "s"i?    { Units<T>.Power.Watt }
+    / "coulomb"i "s"i? { Units<T>.ElectricCharge.Coulomb }
+    / "volt"i "s"i?    { Units<T>.ElectricPotential.Volt }
+    / "farad"i "s"i?   { Units<T>.ElectricalCapacitance.Farad }
+    / "ohm"i "s"i?     { Units<T>.ElectricalResistance.Ohm }
+    / "siemens"i       { Units<T>.ElectricConductance.Siemens }
+    / "weber"i "s"i?   { Units<T>.MagneticFlux.Weber }
+    / "tesla"i "s"i?   { Units<T>.MagneticInductance.Tesla }
+    / "henry"i         { Units<T>.ElectricalInductance.Henry }
+    / "henries"i       { Units<T>.ElectricalInductance.Henry }
 
 nameFactor <NameFactor<T>>
     = n:name { new NameFactor<T>(n) }
