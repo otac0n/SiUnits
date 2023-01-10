@@ -113,17 +113,11 @@ namespace SiUnits
         /// <inheritdoc/>
         public bool Equals(ValueWithUnits<T> other)
         {
-            var x = this / other;
-            return x.Value == T.MultiplicativeIdentity && x.Units == Units<T>.Quantity.One;
+            return (this / other).IsConstant(out var value) && value == T.MultiplicativeIdentity;
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode()
-        {
-            return new CompositeFactor<T>(
-                new NumberFactor<T>(T.CreateChecked(this.Value)),
-                this.Units).GetHashCode();
-        }
+        public override int GetHashCode() => this.Units.GetHashCode();
 
         /// <inheritdoc/>
         public override string ToString() => $"{this.Value} {this.Units}";

@@ -78,9 +78,12 @@ namespace SiUnits
         public static Factor<T> Multiply(params Factor<T>[] factors)
         {
             var factorGroups = GroupFactors(factors);
-            return factorGroups.Count == 1
-                ? factorGroups.Values.Single()
-                : new CompositeFactor<T>(factorGroups);
+            return factorGroups switch
+            {
+                { Count: 0 } => Factors<T>.One,
+                { Count: 1 } => factorGroups.Values.Single(),
+                _ => new CompositeFactor<T>(factorGroups),
+            };
         }
 
         /// <summary>

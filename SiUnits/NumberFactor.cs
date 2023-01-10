@@ -71,7 +71,7 @@ namespace SiUnits
         /// <inheritdoc/>
         public override bool Equals(Factor<T> other) => other switch
         {
-            NumberFactor<T> number => number.Number.Equals(this.Number),
+            NumberFactor<T> number => this.Power == number.Power && this.Number.Equals(number.Number),
             CompositeFactor<T> composite => composite.Equals(this),
             _ => false,
         };

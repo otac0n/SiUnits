@@ -90,11 +90,12 @@ namespace SiUnits
                 select f.Value.ToString());
 
         /// <inheritdoc/>
-        public override int GetHashCode() => unchecked(this.Factors.Sum(f => f.GetHashCode()));
+        public override int GetHashCode() => this.Factors.Select(f => f.GetHashCode()).Aggregate((a, b) => unchecked(a + b));
 
         /// <inheritdoc/>
         public override bool Equals(Factor<T> other) => other switch
         {
+            null => false,
             CompositeFactor<T> composite => Equals(this.factors, composite.factors),
             _ => Equals(this.factors, CoalesceEmptyGroupsToNull(GroupFactors(new[] { other }))),
         };
