@@ -3,12 +3,13 @@
 namespace SiUnits
 {
     using System;
+    using System.Numerics;
 
     /// <summary>
     /// Represents a scalar value with units attached.
     /// </summary>
     /// <typeparam name="T">The type of value with units attached.</typeparam>
-    public struct ValueWithUnits<T>
+    public readonly struct ValueWithUnits<T>
         where T : IFloatingPoint<T>
     {
         /// <summary>
@@ -58,7 +59,7 @@ namespace SiUnits
             var units = left.Units / right;
             try
             {
-                return left.Value * T.Create(units.Factors.AsConstant());
+                return left.Value * T.CreateChecked(units.Factors.AsConstant());
             }
             catch (InvalidOperationException ex)
             {
