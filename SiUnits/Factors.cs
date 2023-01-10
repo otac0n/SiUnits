@@ -5,93 +5,96 @@ namespace SiUnits
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Numerics;
 
-    public static class Factors
+    public static class Factors<T>
+        where T : IFloatingPoint<T>, IPowerFunctions<T>
     {
-        public static readonly NameFactor Ampere;
-        public static readonly NumberFactor Atto;
-        public static readonly NameFactor Candela;
-        public static readonly NumberFactor Centi;
-        public static readonly Factor Coulomb;
-        public static readonly NumberFactor Deca;
-        public static readonly NumberFactor Deci;
-        public static readonly NumberFactor Exa;
-        public static readonly Factor Farad;
-        public static readonly NumberFactor Femto;
-        public static readonly NumberFactor Giga;
-        public static readonly NameFactor Gram;
-        public static readonly NumberFactor Hecto;
-        public static readonly Factor Henry;
-        public static readonly Factor Hertz;
-        public static readonly Factor Joule;
-        public static readonly NameFactor Kelvin;
-        public static readonly NumberFactor Kilo;
-        public static readonly Factor Kilogram;
-        public static readonly NumberFactor Mega;
-        public static readonly NameFactor Meter;
-        public static readonly NumberFactor Micro;
-        public static readonly NumberFactor Milli;
-        public static readonly NameFactor Mole;
-        public static readonly NumberFactor Nano;
-        public static readonly Factor Newton;
-        public static readonly Factor Ohm;
-        public static readonly NumberFactor One;
-        public static readonly Factor Pascal;
-        public static readonly NumberFactor Peta;
-        public static readonly NumberFactor Pico;
-        public static readonly NumberFactor Quecto;
-        public static readonly NumberFactor Quetta;
-        public static readonly NumberFactor Ronna;
-        public static readonly NumberFactor Ronto;
-        public static readonly NameFactor Second;
-        public static readonly Factor Siemens;
-        public static readonly NumberFactor Tera;
-        public static readonly Factor Tesla;
-        public static readonly Factor Volt;
-        public static readonly Factor Watt;
-        public static readonly Factor Weber;
-        public static readonly NumberFactor Yocto;
-        public static readonly NumberFactor Yotta;
-        public static readonly NumberFactor Zepto;
-        public static readonly NumberFactor Zetta;
+        public static readonly NameFactor<T> Ampere;
+        public static readonly NumberFactor<T> Atto;
+        public static readonly NameFactor<T> Candela;
+        public static readonly NumberFactor<T> Centi;
+        public static readonly Factor<T> Coulomb;
+        public static readonly NumberFactor<T> Deca;
+        public static readonly NumberFactor<T> Deci;
+        public static readonly NumberFactor<T> Exa;
+        public static readonly Factor<T> Farad;
+        public static readonly NumberFactor<T> Femto;
+        public static readonly NumberFactor<T> Giga;
+        public static readonly NameFactor<T> Gram;
+        public static readonly NumberFactor<T> Hecto;
+        public static readonly Factor<T> Henry;
+        public static readonly Factor<T> Hertz;
+        public static readonly Factor<T> Joule;
+        public static readonly NameFactor<T> Kelvin;
+        public static readonly NumberFactor<T> Kilo;
+        public static readonly Factor<T> Kilogram;
+        public static readonly NumberFactor<T> Mega;
+        public static readonly NameFactor<T> Meter;
+        public static readonly NumberFactor<T> Micro;
+        public static readonly NumberFactor<T> Milli;
+        public static readonly NameFactor<T> Mole;
+        public static readonly NumberFactor<T> Nano;
+        public static readonly Factor<T> Newton;
+        public static readonly Factor<T> Ohm;
+        public static readonly NumberFactor<T> One;
+        public static readonly Factor<T> Pascal;
+        public static readonly NumberFactor<T> Peta;
+        public static readonly NumberFactor<T> Pico;
+        public static readonly NumberFactor<T> Quecto;
+        public static readonly NumberFactor<T> Quetta;
+        public static readonly NumberFactor<T> Ronna;
+        public static readonly NumberFactor<T> Ronto;
+        public static readonly NameFactor<T> Second;
+        public static readonly Factor<T> Siemens;
+        public static readonly NumberFactor<T> Tera;
+        public static readonly Factor<T> Tesla;
+        public static readonly Factor<T> Volt;
+        public static readonly Factor<T> Watt;
+        public static readonly Factor<T> Weber;
+        public static readonly NumberFactor<T> Yocto;
+        public static readonly NumberFactor<T> Yotta;
+        public static readonly NumberFactor<T> Zepto;
+        public static readonly NumberFactor<T> Zetta;
 
         [SuppressMessage("Performance", "CA1810:Initialize reference type static fields inline", Justification = "The order of field initialization is important.")]
         static Factors()
         {
-            One = new NumberFactor(10, 0);
+            var ten = T.CreateChecked(10);
+            One = new NumberFactor<T>(ten, 0);
 
-            Deca = new NumberFactor(10, 1);
-            Hecto = new NumberFactor(10, 2);
-            Kilo = new NumberFactor(10, 3);
-            Mega = new NumberFactor(10, 6);
-            Giga = new NumberFactor(10, 9);
-            Tera = new NumberFactor(10, 12);
-            Peta = new NumberFactor(10, 15);
-            Exa = new NumberFactor(10, 18);
-            Zetta = new NumberFactor(10, 21);
-            Yotta = new NumberFactor(10, 24);
-            Ronna = new NumberFactor(10, 27);
-            Quetta = new NumberFactor(10, 30);
-            Deci = new NumberFactor(10, -1);
-            Centi = new NumberFactor(10, -2);
-            Milli = new NumberFactor(10, -3);
-            Micro = new NumberFactor(10, -6);
-            Nano = new NumberFactor(10, -9);
-            Pico = new NumberFactor(10, -12);
-            Femto = new NumberFactor(10, -15);
-            Atto = new NumberFactor(10, -18);
-            Zepto = new NumberFactor(10, -21);
-            Yocto = new NumberFactor(10, -24);
-            Ronto = new NumberFactor(10, -27);
-            Quecto = new NumberFactor(10, -30);
+            Deca = new NumberFactor<T>(ten, 1);
+            Hecto = new NumberFactor<T>(ten, 2);
+            Kilo = new NumberFactor<T>(ten, 3);
+            Mega = new NumberFactor<T>(ten, 6);
+            Giga = new NumberFactor<T>(ten, 9);
+            Tera = new NumberFactor<T>(ten, 12);
+            Peta = new NumberFactor<T>(ten, 15);
+            Exa = new NumberFactor<T>(ten, 18);
+            Zetta = new NumberFactor<T>(ten, 21);
+            Yotta = new NumberFactor<T>(ten, 24);
+            Ronna = new NumberFactor<T>(ten, 27);
+            Quetta = new NumberFactor<T>(ten, 30);
+            Deci = new NumberFactor<T>(ten, -1);
+            Centi = new NumberFactor<T>(ten, -2);
+            Milli = new NumberFactor<T>(ten, -3);
+            Micro = new NumberFactor<T>(ten, -6);
+            Nano = new NumberFactor<T>(ten, -9);
+            Pico = new NumberFactor<T>(ten, -12);
+            Femto = new NumberFactor<T>(ten, -15);
+            Atto = new NumberFactor<T>(ten, -18);
+            Zepto = new NumberFactor<T>(ten, -21);
+            Yocto = new NumberFactor<T>(ten, -24);
+            Ronto = new NumberFactor<T>(ten, -27);
+            Quecto = new NumberFactor<T>(ten, -30);
 
-            Ampere = new NameFactor("ampere");
-            Candela = new NameFactor("candela");
-            Gram = new NameFactor("gram");
-            Kelvin = new NameFactor("kelvin");
-            Meter = new NameFactor("meter");
-            Mole = new NameFactor("mole");
-            Second = new NameFactor("second");
+            Ampere = new NameFactor<T>("ampere");
+            Candela = new NameFactor<T>("candela");
+            Gram = new NameFactor<T>("gram");
+            Kelvin = new NameFactor<T>("kelvin");
+            Meter = new NameFactor<T>("meter");
+            Mole = new NameFactor<T>("mole");
+            Second = new NameFactor<T>("second");
 
             Hertz = Second.Pow(-1);
             Kilogram = Kilo * Gram;
@@ -108,18 +111,5 @@ namespace SiUnits
             Tesla = Weber / Meter.Pow(2);
             Henry = Weber / Ampere;
         }
-
-        /// <summary>
-        /// Converts the given factor into a constant value.  Only <see cref="NumberFactor">number factors</see> or <see cref="CompositeFactor">composite factors</see>
-        /// containing number factors are supported.  To convert a value with additional factors, divide by the expected units first.
-        /// </summary>
-        /// <param name="factor">The factor to convert to a constant.</param>
-        /// <returns>The simplified constant value.</returns>
-        public static double AsConstant(this Factor factor) => factor switch
-        {
-            NumberFactor number => Math.Pow(number.Number, number.Power),
-            CompositeFactor composite => composite.Factors.Select(f => f.AsConstant()).Aggregate((a, b) => a * b),
-            _ => throw new InvalidOperationException($"Could not convert factor of '{factor}' to a constant."),
-        };
     }
 }

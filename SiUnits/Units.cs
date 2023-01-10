@@ -4,43 +4,46 @@ namespace SiUnits
 {
     using System;
     using System.Diagnostics;
+    using System.Numerics;
 
     /// <summary>
     /// Represents a set of factors bound together as a unit.
     /// </summary>
+    /// <typeparam name="T">The underlying floating point representation for factors.</typeparam>
     [DebuggerDisplay("{Factors}")]
-    public class Units : IEquatable<Units>
+    public class Units<T> : IEquatable<Units<T>>
+        where T : IFloatingPoint<T>, IPowerFunctions<T>
     {
-        public static readonly Units Atto = new Units(SiUnits.Factors.Atto);
-        public static readonly Units Centi = new Units(SiUnits.Factors.Centi);
-        public static readonly Units Deca = new Units(SiUnits.Factors.Deca);
-        public static readonly Units Deci = new Units(SiUnits.Factors.Deci);
-        public static readonly Units Exa = new Units(SiUnits.Factors.Exa);
-        public static readonly Units Femto = new Units(SiUnits.Factors.Femto);
-        public static readonly Units Giga = new Units(SiUnits.Factors.Giga);
-        public static readonly Units Hecto = new Units(SiUnits.Factors.Hecto);
-        public static readonly Units Kilo = new Units(SiUnits.Factors.Kilo);
-        public static readonly Units Mega = new Units(SiUnits.Factors.Mega);
-        public static readonly Units Micro = new Units(SiUnits.Factors.Micro);
-        public static readonly Units Milli = new Units(SiUnits.Factors.Milli);
-        public static readonly Units Nano = new Units(SiUnits.Factors.Nano);
-        public static readonly Units Peta = new Units(SiUnits.Factors.Peta);
-        public static readonly Units Pico = new Units(SiUnits.Factors.Pico);
-        public static readonly Units Quecto = new Units(SiUnits.Factors.Quecto);
-        public static readonly Units Quetta = new Units(SiUnits.Factors.Quetta);
-        public static readonly Units Ronna = new Units(SiUnits.Factors.Ronna);
-        public static readonly Units Ronto = new Units(SiUnits.Factors.Ronto);
-        public static readonly Units Tera = new Units(SiUnits.Factors.Tera);
-        public static readonly Units Yocto = new Units(SiUnits.Factors.Yocto);
-        public static readonly Units Yotta = new Units(SiUnits.Factors.Yotta);
-        public static readonly Units Zepto = new Units(SiUnits.Factors.Zepto);
-        public static readonly Units Zetta = new Units(SiUnits.Factors.Zetta);
+        public static readonly Units<T> Atto = new Units<T>(Factors<T>.Atto);
+        public static readonly Units<T> Centi = new Units<T>(Factors<T>.Centi);
+        public static readonly Units<T> Deca = new Units<T>(Factors<T>.Deca);
+        public static readonly Units<T> Deci = new Units<T>(Factors<T>.Deci);
+        public static readonly Units<T> Exa = new Units<T>(Factors<T>.Exa);
+        public static readonly Units<T> Femto = new Units<T>(Factors<T>.Femto);
+        public static readonly Units<T> Giga = new Units<T>(Factors<T>.Giga);
+        public static readonly Units<T> Hecto = new Units<T>(Factors<T>.Hecto);
+        public static readonly Units<T> Kilo = new Units<T>(Factors<T>.Kilo);
+        public static readonly Units<T> Mega = new Units<T>(Factors<T>.Mega);
+        public static readonly Units<T> Micro = new Units<T>(Factors<T>.Micro);
+        public static readonly Units<T> Milli = new Units<T>(Factors<T>.Milli);
+        public static readonly Units<T> Nano = new Units<T>(Factors<T>.Nano);
+        public static readonly Units<T> Peta = new Units<T>(Factors<T>.Peta);
+        public static readonly Units<T> Pico = new Units<T>(Factors<T>.Pico);
+        public static readonly Units<T> Quecto = new Units<T>(Factors<T>.Quecto);
+        public static readonly Units<T> Quetta = new Units<T>(Factors<T>.Quetta);
+        public static readonly Units<T> Ronna = new Units<T>(Factors<T>.Ronna);
+        public static readonly Units<T> Ronto = new Units<T>(Factors<T>.Ronto);
+        public static readonly Units<T> Tera = new Units<T>(Factors<T>.Tera);
+        public static readonly Units<T> Yocto = new Units<T>(Factors<T>.Yocto);
+        public static readonly Units<T> Yotta = new Units<T>(Factors<T>.Yotta);
+        public static readonly Units<T> Zepto = new Units<T>(Factors<T>.Zepto);
+        public static readonly Units<T> Zetta = new Units<T>(Factors<T>.Zetta);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Units"/> class.
         /// </summary>
         /// <param name="factors">The set of factors that make up this unit.</param>
-        public Units(Factor factors)
+        public Units(Factor<T> factors)
         {
             this.Factors = factors ?? throw new ArgumentNullException(nameof(factors));
         }
@@ -48,53 +51,53 @@ namespace SiUnits
         /// <summary>
         /// Gets the set of factors that make up this unit.
         /// </summary>
-        public Factor Factors { get; }
+        public Factor<T> Factors { get; }
 
-        public static explicit operator Units(string factors) => new Units(new Parser().Parse(factors));
+        public static explicit operator Units<T>(string factors) => new Units<T>(new Parser<T>().Parse(factors));
 
-        public static ValueWithUnits<double> operator *(double value, Units units) => new ValueWithUnits<double>(value, units);
+        public static ValueWithUnits<T> operator *(T value, Units<T> units) => new ValueWithUnits<T>(value, units);
 
-        public static Units operator *(Units left, Units right)
+        public static Units<T> operator *(Units<T> left, Units<T> right)
         {
             var leftFactors = (left ?? throw new ArgumentNullException(nameof(left))).Factors;
             var rightFactors = (right ?? throw new ArgumentNullException(nameof(right))).Factors;
 
-            return new Units(leftFactors * rightFactors);
+            return new Units<T>(leftFactors * rightFactors);
         }
 
-        public static ValueWithUnits<double> operator /(double value, Units units)
+        public static ValueWithUnits<T> operator /(T value, Units<T> units)
         {
             var unitsFactors = (units ?? throw new ArgumentNullException(nameof(units))).Factors;
-            return new ValueWithUnits<double>(value, new Units(unitsFactors.Pow(-1)));
+            return new ValueWithUnits<T>(value, new Units<T>(unitsFactors.Pow(-1)));
         }
 
-        public static Units operator /(Units left, Units right)
+        public static Units<T> operator /(Units<T> left, Units<T> right)
         {
             var leftFactors = (left ?? throw new ArgumentNullException(nameof(left))).Factors;
             var rightFactors = (right ?? throw new ArgumentNullException(nameof(right))).Factors;
 
-            return new Units(leftFactors / rightFactors);
+            return new Units<T>(leftFactors / rightFactors);
         }
 
-        public static bool operator ==(Units left, Units right) =>
-            left is Units ? left.Equals(right) : right is null;
+        public static bool operator ==(Units<T> left, Units<T> right) =>
+            left is not null ? left.Equals(right) : right is null;
 
-        public static bool operator !=(Units left, Units right) =>
+        public static bool operator !=(Units<T> left, Units<T> right) =>
             !(left == right);
 
         /// <inheritdoc/>
         public override bool Equals(object obj) =>
-            obj is Units other && this.Equals(other);
+            obj is Units<T> other && this.Equals(other);
 
         /// <inheritdoc/>
-        public bool Equals(Units other) =>
-            other is Units && this.Factors == other.Factors;
+        public bool Equals(Units<T> other) =>
+            other is not null && this.Factors == other.Factors;
 
         /// <inheritdoc/>
         public override int GetHashCode() =>
             this.Factors.GetHashCode();
 
-        public Units Pow(int power) => power == 1 ? this : new Units(this.Factors.Pow(power));
+        public Units<T> Pow(int power) => power == 1 ? this : new Units<T>(this.Factors.Pow(power));
 
         /// <inheritdoc />
         public override string ToString() => this.Factors.ToString();
@@ -104,7 +107,7 @@ namespace SiUnits
         /// </summary>
         public static class Distance
         {
-            public static readonly Units Meter = new Units(SiUnits.Factors.Meter);
+            public static readonly Units<T> Meter = new Units<T>(Factors<T>.Meter);
         }
 
         /// <summary>
@@ -112,7 +115,7 @@ namespace SiUnits
         /// </summary>
         public static class ElectricalCapacitance
         {
-            public static readonly Units Farad = new Units(SiUnits.Factors.Farad);
+            public static readonly Units<T> Farad = new Units<T>(Factors<T>.Farad);
         }
 
         /// <summary>
@@ -120,7 +123,7 @@ namespace SiUnits
         /// </summary>
         public static class ElectricalInductance
         {
-            public static readonly Units Henry = new Units(SiUnits.Factors.Henry);
+            public static readonly Units<T> Henry = new Units<T>(Factors<T>.Henry);
         }
 
         /// <summary>
@@ -128,7 +131,7 @@ namespace SiUnits
         /// </summary>
         public static class ElectricalResistance
         {
-            public static readonly Units Ohm = new Units(SiUnits.Factors.Ohm);
+            public static readonly Units<T> Ohm = new Units<T>(Factors<T>.Ohm);
         }
 
         /// <summary>
@@ -136,7 +139,7 @@ namespace SiUnits
         /// </summary>
         public static class ElectricCharge
         {
-            public static readonly Units Coulomb = new Units(SiUnits.Factors.Coulomb);
+            public static readonly Units<T> Coulomb = new Units<T>(Factors<T>.Coulomb);
         }
 
         /// <summary>
@@ -144,7 +147,7 @@ namespace SiUnits
         /// </summary>
         public static class ElectricConductance
         {
-            public static readonly Units Siemens = new Units(SiUnits.Factors.Siemens);
+            public static readonly Units<T> Siemens = new Units<T>(Factors<T>.Siemens);
         }
 
         /// <summary>
@@ -152,7 +155,7 @@ namespace SiUnits
         /// </summary>
         public static class ElectricCurrent
         {
-            public static readonly Units Ampere = new Units(SiUnits.Factors.Ampere);
+            public static readonly Units<T> Ampere = new Units<T>(Factors<T>.Ampere);
         }
 
         /// <summary>
@@ -160,7 +163,7 @@ namespace SiUnits
         /// </summary>
         public static class ElectricPotential
         {
-            public static readonly Units Volt = new Units(SiUnits.Factors.Volt);
+            public static readonly Units<T> Volt = new Units<T>(Factors<T>.Volt);
         }
 
         /// <summary>
@@ -168,7 +171,7 @@ namespace SiUnits
         /// </summary>
         public static class Energy
         {
-            public static readonly Units Joule = new Units(SiUnits.Factors.Joule);
+            public static readonly Units<T> Joule = new Units<T>(Factors<T>.Joule);
         }
 
         /// <summary>
@@ -176,7 +179,7 @@ namespace SiUnits
         /// </summary>
         public static class Force
         {
-            public static readonly Units Newton = new Units(SiUnits.Factors.Newton);
+            public static readonly Units<T> Newton = new Units<T>(Factors<T>.Newton);
         }
 
         /// <summary>
@@ -184,7 +187,7 @@ namespace SiUnits
         /// </summary>
         public static class Frequency
         {
-            public static readonly Units Hertz = new Units(SiUnits.Factors.Hertz);
+            public static readonly Units<T> Hertz = new Units<T>(Factors<T>.Hertz);
         }
 
         /// <summary>
@@ -192,7 +195,7 @@ namespace SiUnits
         /// </summary>
         public static class LuminousIntensity
         {
-            public static readonly Units Candela = new Units(SiUnits.Factors.Candela);
+            public static readonly Units<T> Candela = new Units<T>(Factors<T>.Candela);
         }
 
         /// <summary>
@@ -200,7 +203,7 @@ namespace SiUnits
         /// </summary>
         public static class MagneticFlux
         {
-            public static readonly Units Weber = new Units(SiUnits.Factors.Weber);
+            public static readonly Units<T> Weber = new Units<T>(Factors<T>.Weber);
         }
 
         /// <summary>
@@ -208,7 +211,7 @@ namespace SiUnits
         /// </summary>
         public static class MagneticInductance
         {
-            public static readonly Units Tesla = new Units(SiUnits.Factors.Tesla);
+            public static readonly Units<T> Tesla = new Units<T>(Factors<T>.Tesla);
         }
 
         /// <summary>
@@ -216,9 +219,9 @@ namespace SiUnits
         /// </summary>
         public static class Mass
         {
-            public static readonly Units Gram = new Units(SiUnits.Factors.Gram);
+            public static readonly Units<T> Gram = new Units<T>(Factors<T>.Gram);
 
-            public static readonly Units Kilogram = new Units(SiUnits.Factors.Kilogram);
+            public static readonly Units<T> Kilogram = new Units<T>(Factors<T>.Kilogram);
         }
 
         /// <summary>
@@ -226,7 +229,7 @@ namespace SiUnits
         /// </summary>
         public static class Physical
         {
-            public static readonly Units JouleSeconds = Energy.Joule * Time.Second;
+            public static readonly Units<T> JouleSeconds = Energy.Joule * Time.Second;
         }
 
         /// <summary>
@@ -234,7 +237,7 @@ namespace SiUnits
         /// </summary>
         public static class Power
         {
-            public static readonly Units Watt = new Units(SiUnits.Factors.Watt);
+            public static readonly Units<T> Watt = new Units<T>(Factors<T>.Watt);
         }
 
         /// <summary>
@@ -242,7 +245,7 @@ namespace SiUnits
         /// </summary>
         public static class Pressure
         {
-            public static readonly Units Pascal = new Units(SiUnits.Factors.Pascal);
+            public static readonly Units<T> Pascal = new Units<T>(Factors<T>.Pascal);
         }
 
         /// <summary>
@@ -250,9 +253,9 @@ namespace SiUnits
         /// </summary>
         public static class Quantity
         {
-            public static readonly Units Mole = new Units(SiUnits.Factors.Mole);
+            public static readonly Units<T> Mole = new Units<T>(Factors<T>.Mole);
 
-            public static readonly Units One = new Units(SiUnits.Factors.One);
+            public static readonly Units<T> One = new Units<T>(Factors<T>.One);
         }
 
         /// <summary>
@@ -260,7 +263,7 @@ namespace SiUnits
         /// </summary>
         public static class Temperature
         {
-            public static readonly Units Kelvin = new Units(SiUnits.Factors.Kelvin);
+            public static readonly Units<T> Kelvin = new Units<T>(Factors<T>.Kelvin);
         }
 
         /// <summary>
@@ -268,7 +271,7 @@ namespace SiUnits
         /// </summary>
         public static class Time
         {
-            public static readonly Units Second = new Units(SiUnits.Factors.Second);
+            public static readonly Units<T> Second = new Units<T>(Factors<T>.Second);
         }
 
         /// <summary>
@@ -276,7 +279,7 @@ namespace SiUnits
         /// </summary>
         public static class Velocity
         {
-            public static readonly Units MetersPerSecond = Distance.Meter / Time.Second;
+            public static readonly Units<T> MetersPerSecond = Distance.Meter / Time.Second;
         }
     }
 }

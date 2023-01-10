@@ -10,14 +10,14 @@ namespace SiUnits
     /// </summary>
     /// <typeparam name="T">The type of value with units attached.</typeparam>
     public readonly struct ValueWithUnits<T> : IEquatable<ValueWithUnits<T>>
-        where T : IFloatingPoint<T>
+        where T : IFloatingPoint<T>, IPowerFunctions<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ValueWithUnits{T}"/> struct.
         /// </summary>
         /// <param name="value">The scalar value.</param>
         /// <param name="units">The attached units.</param>
-        public ValueWithUnits(T value, Units units)
+        public ValueWithUnits(T value, Units<T> units)
         {
             this.Value = value;
             this.Units = units ?? throw new ArgumentNullException(nameof(units));
@@ -26,7 +26,7 @@ namespace SiUnits
         /// <summary>
         /// Gets the attached units.
         /// </summary>
-        public Units Units { get; }
+        public Units<T> Units { get; }
 
         /// <summary>
         /// Gets the scalar value.
@@ -54,7 +54,7 @@ namespace SiUnits
         public static ValueWithUnits<T> operator /(T left, ValueWithUnits<T> right) =>
             new ValueWithUnits<T>(left / right.Value, right.Units.Pow(-1));
 
-        public static T operator /(ValueWithUnits<T> left, Units right)
+        public static T operator /(ValueWithUnits<T> left, Units<T> right)
         {
             var units = left.Units / right;
             try
@@ -83,14 +83,14 @@ namespace SiUnits
         public bool Equals(ValueWithUnits<T> other)
         {
             var x = this / other;
-            return x.Value == T.MultiplicativeIdentity && x.Units == Units.Quantity.One;
+            return x.Value == T.MultiplicativeIdentity && x.Units == Units<T>.Quantity.One;
         }
 
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            return new CompositeFactor(
-                new NumberFactor(double.CreateChecked(this.Value)),
+            return new CompositeFactor<T>(
+                new NumberFactor<T>(T.CreateChecked(this.Value)),
                 this.Units.Factors).GetHashCode();
         }
 

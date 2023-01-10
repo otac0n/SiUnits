@@ -3,20 +3,23 @@
 namespace SiUnits
 {
     using System;
+    using System.Numerics;
 
     /// <summary>
     /// Represents a number factor.
     /// </summary>
-    public sealed class NumberFactor : Factor
+    /// <typeparam name="T">The underlying floating point representation for factors.</typeparam>
+    public sealed class NumberFactor<T> : Factor<T>
+        where T : IFloatingPoint<T>, IPowerFunctions<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NumberFactor"/> class.
+        /// Initializes a new instance of the <see cref="NumberFactor{T}"/> class.
         /// </summary>
         /// <param name="number">The positive number being used as a factor.</param>
         /// <param name="power">The power of this factor.</param>
-        public NumberFactor(double number, int power = 1)
+        public NumberFactor(T number, int power = 1)
         {
-            if (number <= 0)
+            if (number <= T.AdditiveIdentity)
             {
                 throw new ArgumentOutOfRangeException(nameof(number));
             }
@@ -28,12 +31,12 @@ namespace SiUnits
         /// <summary>
         /// Gets the unit factor.
         /// </summary>
-        public static NumberFactor Unit { get; } = new NumberFactor(1);
+        public static NumberFactor<T> Unit { get; } = new NumberFactor<T>(T.MultiplicativeIdentity);
 
         /// <summary>
         /// Gets the number being used as a factor.
         /// </summary>
-        public double Number { get; }
+        public T Number { get; }
 
         /// <summary>
         /// Gets the power of this factor.
@@ -41,10 +44,10 @@ namespace SiUnits
         public int Power { get; }
 
         /// <inheritdoc />
-        public override Factor Pow(int power) =>
+        public override Factor<T> Pow(int power) =>
             power == 1 ? this :
-            power == 0 || this.Number == 1 ? Unit :
-            new NumberFactor(this.Number, this.Power * power);
+            power == 0 || this.Number == T.MultiplicativeIdentity ? Unit :
+            new NumberFactor<T>(this.Number, this.Power * power);
 
         /// <inheritdoc />
         public override string ToString() => this.Power == 1 ? $"{this.Number}" : $"{this.Number}^{this.Power}";
@@ -53,10 +56,10 @@ namespace SiUnits
         public override int GetHashCode() => 0;
 
         /// <inheritdoc/>
-        public override bool Equals(Factor other) => other switch
+        public override bool Equals(Factor<T> other) => other switch
         {
-            NumberFactor number => number.Number.Equals(this.Number),
-            CompositeFactor composite => composite.Equals(this),
+            NumberFactor<T> number => number.Number.Equals(this.Number),
+            CompositeFactor<T> composite => composite.Equals(this),
             _ => false,
         };
     }

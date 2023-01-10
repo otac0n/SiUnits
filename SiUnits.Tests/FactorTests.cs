@@ -3,6 +3,10 @@ namespace SiUnits.Tests
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
+    using CompositeFactor = SiUnits.CompositeFactor<double>;
+    using Factor = SiUnits.Factor<double>;
+    using Factors = SiUnits.Factors<double>;
+    using NumberFactor = SiUnits.NumberFactor<double>;
 
     public class FactorTests
     {

@@ -6,16 +6,19 @@ namespace SiUnits
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Numerics;
 
     /// <summary>
     /// The base class for factors in SI Units.
     /// </summary>
-    public abstract class Factor : IEquatable<Factor>
+    /// <typeparam name="T">The underlying floating point representation for factors.</typeparam>
+    public abstract class Factor<T> : IEquatable<Factor<T>>
+        where T : IFloatingPoint<T>, IPowerFunctions<T>
     {
         /// <summary>
         /// The list of factors to use if an empty list of factors is provided.
         /// </summary>
-        protected static readonly ReadOnlyCollection<Factor> EmptyFactorList = new List<Factor> { Factors.One }.AsReadOnly();
+        protected static readonly ReadOnlyCollection<Factor<T>> EmptyFactorList = new List<Factor<T>> { Factors<T>.One }.AsReadOnly();
 
         internal Factor()
         {
@@ -27,7 +30,7 @@ namespace SiUnits
         /// <param name="left">The left factor to multiply.</param>
         /// <param name="right">The right factor to multiply.</param>
         /// <returns>The multiplied factor.</returns>
-        public static Factor operator *(Factor left, Factor right) => Multiply(left, right);
+        public static Factor<T> operator *(Factor<T> left, Factor<T> right) => Multiply(left, right);
 
         /// <summary>
         /// Divides one factor by another.
@@ -35,7 +38,7 @@ namespace SiUnits
         /// <param name="left">The factor to divide.</param>
         /// <param name="right">The factor to divide by.</param>
         /// <returns>The combined factor.</returns>
-        public static Factor operator /(Factor left, Factor right)
+        public static Factor<T> operator /(Factor<T> left, Factor<T> right)
         {
             if (left == null)
             {
@@ -52,12 +55,12 @@ namespace SiUnits
         /// </summary>
         /// <param name="factors">The collection of factors to multiply.</param>
         /// <returns>The multiplied factor.</returns>
-        public static Factor Multiply(params Factor[] factors)
+        public static Factor<T> Multiply(params Factor<T>[] factors)
         {
             var factorGroups = GroupFactors(factors);
             return factorGroups.Count == 1
                 ? factorGroups.Values.Single()
-                : new CompositeFactor(factorGroups);
+                : new CompositeFactor<T>(factorGroups);
         }
 
         /// <summary>
@@ -65,7 +68,7 @@ namespace SiUnits
         /// </summary>
         /// <param name="factors">The collection of factors to simplify.</param>
         /// <returns>A simplified list of factors.</returns>
-        public static ReadOnlyCollection<Factor> SimplifyFactors(IEnumerable<Factor> factors)
+        public static ReadOnlyCollection<Factor<T>> SimplifyFactors(IEnumerable<Factor<T>> factors)
         {
             var groups = GroupFactors(factors);
             var result = groups.Count == 0
@@ -74,11 +77,24 @@ namespace SiUnits
             return result;
         }
 
-        /// <inheritdoc/>
-        public override bool Equals(object obj) => obj is Factor other && this.Equals(other);
+        /// <summary>
+        /// Converts the given factor into a constant value.  Only <see cref="NumberFactor{T}">number factors</see> or <see cref="CompositeFactor{T}">composite factors</see>
+        /// containing number factors are supported.  To convert a value with additional factors, divide by the expected units first.
+        /// </summary>
+        /// <param name="factor">The factor to convert to a constant.</param>
+        /// <returns>The simplified constant value.</returns>
+        public T AsConstant() => this switch
+        {
+            NumberFactor<T> number => T.Pow(number.Number, T.CreateChecked(number.Power)),
+            CompositeFactor<T> composite => composite.Factors.Select(f => f.AsConstant()).Aggregate((a, b) => a * b),
+            _ => throw new InvalidOperationException($"Could not convert factor of '{this}' to a constant."),
+        };
 
         /// <inheritdoc/>
-        public abstract bool Equals(Factor other);
+        public override bool Equals(object obj) => obj is Factor<T> other && this.Equals(other);
+
+        /// <inheritdoc/>
+        public abstract bool Equals(Factor<T> other);
 
         /// <inheritdoc/>
         public abstract override int GetHashCode();
@@ -88,7 +104,7 @@ namespace SiUnits
         /// </summary>
         /// <param name="power">The power to which this factor should be raised.</param>
         /// <returns>A new factor equal to this factor raised to the specified power.</returns>
-        public abstract Factor Pow(int power);
+        public abstract Factor<T> Pow(int power);
 
         /// <inheritdoc />
         public abstract override string ToString();
@@ -98,14 +114,14 @@ namespace SiUnits
         /// </summary>
         /// <param name="factors">The collection of factors to simplify.</param>
         /// <returns>A collection of grouped factors.</returns>
-        protected static Dictionary<object, Factor> GroupFactors(IEnumerable<Factor> factors)
+        protected static Dictionary<object, Factor<T>> GroupFactors(IEnumerable<Factor<T>> factors)
         {
-            var singleFactor = new Factor[1];
-            var values = new Dictionary<object, Factor>();
-            foreach (var factor in factors ?? Array.Empty<Factor>())
+            var singleFactor = new Factor<T>[1];
+            var values = new Dictionary<object, Factor<T>>();
+            foreach (var factor in factors ?? Array.Empty<Factor<T>>())
             {
-                IEnumerable<Factor> subFactors;
-                if (factor is CompositeFactor composite)
+                IEnumerable<Factor<T>> subFactors;
+                if (factor is CompositeFactor<T> composite)
                 {
                     subFactors = composite.Factors;
                 }
@@ -119,19 +135,19 @@ namespace SiUnits
                 {
                     switch (subFactor)
                     {
-                        case NameFactor name:
+                        case NameFactor<T> name:
                             if (name.Power != 0)
                             {
                                 if (values.TryGetValue(name.Name, out var value))
                                 {
-                                    var newPower = ((NameFactor)value).Power + name.Power;
+                                    var newPower = ((NameFactor<T>)value).Power + name.Power;
                                     if (newPower == 0)
                                     {
                                         values.Remove(name.Name);
                                     }
                                     else
                                     {
-                                        values[name.Name] = new NameFactor(name.Name, newPower);
+                                        values[name.Name] = new NameFactor<T>(name.Name, newPower);
                                     }
                                 }
                                 else
@@ -142,19 +158,19 @@ namespace SiUnits
 
                             break;
 
-                        case NumberFactor number:
-                            if (number.Number != 1 && number.Power != 0)
+                        case NumberFactor<T> number:
+                            if (number.Number != NumberFactor<T>.Unit.Number && number.Power != 0)
                             {
                                 if (values.TryGetValue(number.Number, out var value))
                                 {
-                                    var newPower = ((NumberFactor)value).Power + number.Power;
+                                    var newPower = ((NumberFactor<T>)value).Power + number.Power;
                                     if (newPower == 0)
                                     {
                                         values.Remove(number.Number);
                                     }
                                     else
                                     {
-                                        values[number.Number] = new NumberFactor(number.Number, newPower);
+                                        values[number.Number] = new NumberFactor<T>(number.Number, newPower);
                                     }
                                 }
                                 else

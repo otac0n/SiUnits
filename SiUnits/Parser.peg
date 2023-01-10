@@ -1,132 +1,133 @@
 @namespace SiUnits
+@classname Parser<T>
 @using System.Linq
 
-start <Factor> = _ f:factor _ EOF { f }
+start <Factor<T>> = _ f:factor _ EOF { f }
 
-factor <Factor> -memoize
+factor <Factor<T>> -memoize
     = left:factor (_ [*·⋅] _ / WS) right:power { left * right }
     / left:factor _ "/" _ right:power { left / right }
     / power
 
-power <Factor>
+power <Factor<T>>
     = left:primary _ "^" _ right:int { left.Pow(right) }
     / primary
 
-primary <Factor> -memoize
+primary <Factor<T>> -memoize
     = numberFactor
     / siUnitFactor
     / nameFactor
     / "(" f:factor ")" { f }
 
-numberFactor <NumberFactor>
-    = n:int { new NumberFactor(n) }
+numberFactor <NumberFactor<T>>
+    = n:int { new NumberFactor<T>(T.CreateChecked(n)) }
 
-siUnitFactor <Factor>
+siUnitFactor <Factor<T>>
     = p:siPrefixSymbol n:siUnitSymbol !name { p * n }
     / n:siUnitSymbol !name { n }
     / p:siPrefix n:siUnitName !name { p * n }
     / n:siUnitName !name { n }
 
-siPrefixSymbol <NumberFactor>
-    = "da" { Factors.Deca }
-    / "h"  { Factors.Hecto }
-    / "k"  { Factors.Kilo }
-    / "M"  { Factors.Mega }
-    / "G"  { Factors.Giga }
-    / "T"  { Factors.Tera }
-    / "P"  { Factors.Peta }
-    / "E"  { Factors.Exa }
-    / "Z"  { Factors.Zetta }
-    / "Y"  { Factors.Yotta }
-    / "R"  { Factors.Ronna }
-    / "Q"  { Factors.Quetta }
-    / "d"  { Factors.Deci }
-    / "c"  { Factors.Centi }
-    / "m"  { Factors.Milli }
-    / "μ"  { Factors.Micro }
-    / "n"  { Factors.Nano }
-    / "p"  { Factors.Pico }
-    / "f"  { Factors.Femto }
-    / "a"  { Factors.Atto }
-    / "z"  { Factors.Zepto }
-    / "y"  { Factors.Yocto }
-    / "r"  { Factors.Ronto }
-    / "q"  { Factors.Quecto }
+siPrefixSymbol <NumberFactor<T>>
+    = "da" { Factors<T>.Deca }
+    / "h"  { Factors<T>.Hecto }
+    / "k"  { Factors<T>.Kilo }
+    / "M"  { Factors<T>.Mega }
+    / "G"  { Factors<T>.Giga }
+    / "T"  { Factors<T>.Tera }
+    / "P"  { Factors<T>.Peta }
+    / "E"  { Factors<T>.Exa }
+    / "Z"  { Factors<T>.Zetta }
+    / "Y"  { Factors<T>.Yotta }
+    / "R"  { Factors<T>.Ronna }
+    / "Q"  { Factors<T>.Quetta }
+    / "d"  { Factors<T>.Deci }
+    / "c"  { Factors<T>.Centi }
+    / "m"  { Factors<T>.Milli }
+    / "μ"  { Factors<T>.Micro }
+    / "n"  { Factors<T>.Nano }
+    / "p"  { Factors<T>.Pico }
+    / "f"  { Factors<T>.Femto }
+    / "a"  { Factors<T>.Atto }
+    / "z"  { Factors<T>.Zepto }
+    / "y"  { Factors<T>.Yocto }
+    / "r"  { Factors<T>.Ronto }
+    / "q"  { Factors<T>.Quecto }
 
-siPrefix <NumberFactor>
-    = "deca"i   { Factors.Deca }
-    / "hecto"i  { Factors.Hecto }
-    / "kilo"i   { Factors.Kilo }
-    / "mega"i   { Factors.Mega }
-    / "giga"i   { Factors.Giga }
-    / "tera"i   { Factors.Tera }
-    / "peta"i   { Factors.Peta }
-    / "exa"i    { Factors.Exa }
-    / "zetta"i  { Factors.Zetta }
-    / "yotta"i  { Factors.Yotta }
-    / "ronna"i  { Factors.Ronna }
-    / "quetta"i { Factors.Quetta }
-    / "deci"i   { Factors.Deci }
-    / "centi"i  { Factors.Centi }
-    / "milli"i  { Factors.Milli }
-    / "micro"i  { Factors.Micro }
-    / "nano"i   { Factors.Nano }
-    / "pico"i   { Factors.Pico }
-    / "femto"i  { Factors.Femto }
-    / "atto"i   { Factors.Atto }
-    / "zepto"i  { Factors.Zepto }
-    / "yocto"i  { Factors.Yocto }
-    / "ronto"i  { Factors.Ronto }
-    / "quecto"i { Factors.Quecto }
+siPrefix <NumberFactor<T>>
+    = "deca"i   { Factors<T>.Deca }
+    / "hecto"i  { Factors<T>.Hecto }
+    / "kilo"i   { Factors<T>.Kilo }
+    / "mega"i   { Factors<T>.Mega }
+    / "giga"i   { Factors<T>.Giga }
+    / "tera"i   { Factors<T>.Tera }
+    / "peta"i   { Factors<T>.Peta }
+    / "exa"i    { Factors<T>.Exa }
+    / "zetta"i  { Factors<T>.Zetta }
+    / "yotta"i  { Factors<T>.Yotta }
+    / "ronna"i  { Factors<T>.Ronna }
+    / "quetta"i { Factors<T>.Quetta }
+    / "deci"i   { Factors<T>.Deci }
+    / "centi"i  { Factors<T>.Centi }
+    / "milli"i  { Factors<T>.Milli }
+    / "micro"i  { Factors<T>.Micro }
+    / "nano"i   { Factors<T>.Nano }
+    / "pico"i   { Factors<T>.Pico }
+    / "femto"i  { Factors<T>.Femto }
+    / "atto"i   { Factors<T>.Atto }
+    / "zepto"i  { Factors<T>.Zepto }
+    / "yocto"i  { Factors<T>.Yocto }
+    / "ronto"i  { Factors<T>.Ronto }
+    / "quecto"i { Factors<T>.Quecto }
 
-siUnitSymbol <Factor>
-    = "m"   { Factors.Meter }
-    / "g"   { Factors.Gram }
-    / "s"   { Factors.Second }
-    / "A"   { Factors.Ampere }
-    / "K"   { Factors.Kelvin }
-    / "mol" { Factors.Mole }
-    / "cd"  { Factors.Candela }
-    / "Hz"  { Factors.Hertz }
-    / "N"   { Factors.Newton }
-    / "Pa"  { Factors.Pascal }
-    / "J"   { Factors.Joule }
-    / "W"   { Factors.Watt }
-    / "C"   { Factors.Coulomb }
-    / "V"   { Factors.Volt }
-    / "F"   { Factors.Farad }
-    / "Ω"   { Factors.Ohm }
-    / "S"   { Factors.Siemens }
-    / "Wb"  { Factors.Weber }
-    / "T"   { Factors.Tesla }
-    / "H"   { Factors.Henry }
+siUnitSymbol <Factor<T>>
+    = "m"   { Factors<T>.Meter }
+    / "g"   { Factors<T>.Gram }
+    / "s"   { Factors<T>.Second }
+    / "A"   { Factors<T>.Ampere }
+    / "K"   { Factors<T>.Kelvin }
+    / "mol" { Factors<T>.Mole }
+    / "cd"  { Factors<T>.Candela }
+    / "Hz"  { Factors<T>.Hertz }
+    / "N"   { Factors<T>.Newton }
+    / "Pa"  { Factors<T>.Pascal }
+    / "J"   { Factors<T>.Joule }
+    / "W"   { Factors<T>.Watt }
+    / "C"   { Factors<T>.Coulomb }
+    / "V"   { Factors<T>.Volt }
+    / "F"   { Factors<T>.Farad }
+    / "Ω"   { Factors<T>.Ohm }
+    / "S"   { Factors<T>.Siemens }
+    / "Wb"  { Factors<T>.Weber }
+    / "T"   { Factors<T>.Tesla }
+    / "H"   { Factors<T>.Henry }
 
-siUnitName <Factor>
-    = "meter"i "s"i?   { Factors.Meter }
-    / "metre"i "s"i?   { Factors.Meter }
-    / "gram"i "s"i?    { Factors.Gram }
-    / "second"i "s"i?  { Factors.Second }
-    / "ampere"i "s"i?  { Factors.Ampere }
-    / "kelvin"i        { Factors.Kelvin }
-    / "mole"i "s"i?    { Factors.Mole }
-    / "candela"i "s"i? { Factors.Candela }
-    / "hertz"i         { Factors.Hertz }
-    / "newton"i "s"i?  { Factors.Newton }
-    / "pascal"i "s"i?  { Factors.Pascal }
-    / "joule"i "s"i?   { Factors.Joule }
-    / "watt"i "s"i?    { Factors.Watt }
-    / "coulomb"i "s"i? { Factors.Coulomb }
-    / "volt"i "s"i?    { Factors.Volt }
-    / "farad"i "s"i?   { Factors.Farad }
-    / "ohm"i "s"i?     { Factors.Ohm }
-    / "siemens"i       { Factors.Siemens }
-    / "weber"i "s"i?   { Factors.Weber }
-    / "tesla"i "s"i?   { Factors.Tesla }
-    / "henry"i         { Factors.Henry }
-    / "henries"i       { Factors.Henry }
+siUnitName <Factor<T>>
+    = "meter"i "s"i?   { Factors<T>.Meter }
+    / "metre"i "s"i?   { Factors<T>.Meter }
+    / "gram"i "s"i?    { Factors<T>.Gram }
+    / "second"i "s"i?  { Factors<T>.Second }
+    / "ampere"i "s"i?  { Factors<T>.Ampere }
+    / "kelvin"i        { Factors<T>.Kelvin }
+    / "mole"i "s"i?    { Factors<T>.Mole }
+    / "candela"i "s"i? { Factors<T>.Candela }
+    / "hertz"i         { Factors<T>.Hertz }
+    / "newton"i "s"i?  { Factors<T>.Newton }
+    / "pascal"i "s"i?  { Factors<T>.Pascal }
+    / "joule"i "s"i?   { Factors<T>.Joule }
+    / "watt"i "s"i?    { Factors<T>.Watt }
+    / "coulomb"i "s"i? { Factors<T>.Coulomb }
+    / "volt"i "s"i?    { Factors<T>.Volt }
+    / "farad"i "s"i?   { Factors<T>.Farad }
+    / "ohm"i "s"i?     { Factors<T>.Ohm }
+    / "siemens"i       { Factors<T>.Siemens }
+    / "weber"i "s"i?   { Factors<T>.Weber }
+    / "tesla"i "s"i?   { Factors<T>.Tesla }
+    / "henry"i         { Factors<T>.Henry }
+    / "henries"i       { Factors<T>.Henry }
 
-nameFactor <NameFactor>
-    = n:name { new NameFactor(n) }
+nameFactor <NameFactor<T>>
+    = n:name { new NameFactor<T>(n) }
 
 name
     = "" (c:. &{ char.IsLetter(c[0]) })+

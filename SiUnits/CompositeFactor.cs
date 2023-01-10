@@ -6,33 +6,36 @@ namespace SiUnits
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
+    using System.Numerics;
 
     /// <summary>
     /// Represents a factor made up of multiple component factors.
     /// </summary>
-    public sealed class CompositeFactor : Factor
+    /// <typeparam name="T">The underlying floating point representation for factors.</typeparam>
+    public sealed class CompositeFactor<T> : Factor<T>
+        where T : IFloatingPoint<T>, IPowerFunctions<T>
     {
-        private readonly ImmutableDictionary<object, Factor> factors;
+        private readonly ImmutableDictionary<object, Factor<T>> factors;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositeFactor"/> class.
+        /// Initializes a new instance of the <see cref="CompositeFactor{T}"/> class.
         /// </summary>
         /// <param name="factors">The component factors that make up this composite factor.</param>
-        public CompositeFactor(params Factor[] factors)
+        public CompositeFactor(params Factor<T>[] factors)
             : this(factors.AsEnumerable())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CompositeFactor"/> class.
+        /// Initializes a new instance of the <see cref="CompositeFactor{T}"/> class.
         /// </summary>
         /// <param name="factors">The component factors that make up this composite factor.</param>
-        public CompositeFactor(IEnumerable<Factor> factors)
+        public CompositeFactor(IEnumerable<Factor<T>> factors)
             : this(GroupFactors(factors ?? throw new ArgumentNullException(nameof(factors))))
         {
         }
 
-        internal CompositeFactor(IDictionary<object, Factor> groups)
+        internal CompositeFactor(IDictionary<object, Factor<T>> groups)
         {
             this.factors = CoalesceEmptyGroupsToNull(groups)?.ToImmutableDictionary();
         }
@@ -40,12 +43,12 @@ namespace SiUnits
         /// <summary>
         /// Gets the component factors that make up this composite factor.
         /// </summary>
-        public IEnumerable<Factor> Factors => this.factors?.Values ?? EmptyFactorList;
+        public IEnumerable<Factor<T>> Factors => this.factors?.Values ?? EmptyFactorList;
 
-        private static IDictionary<object, Factor> CoalesceEmptyGroupsToNull(IDictionary<object, Factor> groups) => groups?.Count > 0 ? groups : null;
+        private static IDictionary<object, Factor<T>> CoalesceEmptyGroupsToNull(IDictionary<object, Factor<T>> groups) => groups?.Count > 0 ? groups : null;
 
         /// <inheritdoc />
-        public override Factor Pow(int power) => new CompositeFactor(this.Factors.Select(f => f.Pow(power)));
+        public override Factor<T> Pow(int power) => new CompositeFactor<T>(this.Factors.Select(f => f.Pow(power)));
 
         /// <inheritdoc />
         public override string ToString() =>
@@ -59,13 +62,13 @@ namespace SiUnits
         public override int GetHashCode() => unchecked(this.Factors.Sum(f => f.GetHashCode()));
 
         /// <inheritdoc/>
-        public override bool Equals(Factor other) => other switch
+        public override bool Equals(Factor<T> other) => other switch
         {
-            CompositeFactor composite => Equals(this.factors, composite.factors),
+            CompositeFactor<T> composite => Equals(this.factors, composite.factors),
             _ => Equals(this.factors, CoalesceEmptyGroupsToNull(GroupFactors(new[] { other }))),
         };
 
-        private static bool Equals(IDictionary<object, Factor> left, IDictionary<object, Factor> right)
+        private static bool Equals(IDictionary<object, Factor<T>> left, IDictionary<object, Factor<T>> right)
         {
             if (object.ReferenceEquals(left, right))
             {

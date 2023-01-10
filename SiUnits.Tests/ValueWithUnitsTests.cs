@@ -5,9 +5,12 @@ namespace SiUnits.Tests
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Numerics;
     using Xunit;
-    using static Units;
+    using CompositeFactor = SiUnits.CompositeFactor<double>;
+    using Factor = SiUnits.Factor<double>;
+    using Factors = SiUnits.Factors<double>;
+    using NumberFactor = SiUnits.NumberFactor<double>;
+    using static Units<double>;
 
     public class ValueWithUnitsTests
     {
@@ -44,12 +47,12 @@ namespace SiUnits.Tests
         [Fact]
         public void Integration_DifferenceOfDistances()
         {
-            var distanceA = 1 * (Units)"km";
-            var distanceB = 2 * (Units)"m";
-            var distanceC = 3 * (Units)"cm";
+            var distanceA = 1 * (Units<double>)"km";
+            var distanceB = 2 * (Units<double>)"m";
+            var distanceC = 3 * (Units<double>)"cm";
             var expected = 1000000000000.0 - 2000000000.0 - 30000000.0;
 
-            var distanceInNano = (distanceA - distanceB - distanceC) / (Units)"nm";
+            var distanceInNano = (distanceA - distanceB - distanceC) / (Units<double>)"nm";
 
             Assert.Equal(expected, distanceInNano);
         }
@@ -57,7 +60,7 @@ namespace SiUnits.Tests
         [Fact]
         public void Integration_SpeedEquation()
         {
-            var speed = 10 * (Units)"m/s";
+            var speed = 10 * (Units<double>)"m/s";
             var distance = 2 * (Kilo * Distance.Meter);
             var time = distance / speed;
 
@@ -69,12 +72,12 @@ namespace SiUnits.Tests
         [Fact]
         public void Integration_SumOfDistances()
         {
-            var distanceA = 1 * (Units)"km";
-            var distanceB = 2 * (Units)"m";
-            var distanceC = 3 * (Units)"cm";
+            var distanceA = 1 * (Units<double>)"km";
+            var distanceB = 2 * (Units<double>)"m";
+            var distanceC = 3 * (Units<double>)"cm";
             var expected = 1000000000000.0 + 2000000000.0 + 30000000.0;
 
-            var distanceInNano = (distanceA + distanceB + distanceC) / (Units)"nm";
+            var distanceInNano = (distanceA + distanceB + distanceC) / (Units<double>)"nm";
 
             Assert.Equal(expected, distanceInNano);
         }
@@ -83,8 +86,8 @@ namespace SiUnits.Tests
         [MemberData(nameof(GetEquivalentFactorPairs))]
         public void Equals_WithEquivalentFactors_ReturnsTrue(Factor factorA, Factor factorB)
         {
-            var a = 42.0 * new Units(factorA);
-            var b = 42.0 * new Units(factorB);
+            var a = 42.0 * new Units<double>(factorA);
+            var b = 42.0 * new Units<double>(factorB);
             Assert.True(a.Equals(b));
         }
     }
