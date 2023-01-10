@@ -24,6 +24,20 @@ namespace SiUnits
         {
         }
 
+        public static explicit operator Factor<T>(string factors) => new Parser<T>().Parse(factors);
+
+        public static ValueWithUnits<T> operator *(T value, Factor<T> units) => new ValueWithUnits<T>(value, units);
+
+        public static ValueWithUnits<T> operator /(T value, Factor<T> units)
+        {
+            if (units is null)
+            {
+                throw new ArgumentNullException(nameof(units));
+            }
+
+            return new ValueWithUnits<T>(value, units.Pow(-1));
+        }
+
         /// <summary>
         /// Multiplies two factors.
         /// </summary>
@@ -31,6 +45,12 @@ namespace SiUnits
         /// <param name="right">The right factor to multiply.</param>
         /// <returns>The multiplied factor.</returns>
         public static Factor<T> operator *(Factor<T> left, Factor<T> right) => Multiply(left, right);
+
+        public static bool operator ==(Factor<T> left, Factor<T> right) =>
+            left is not null ? left.Equals(right) : right is null;
+
+        public static bool operator !=(Factor<T> left, Factor<T> right) =>
+            !(left == right);
 
         /// <summary>
         /// Divides one factor by another.
