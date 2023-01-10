@@ -34,7 +34,12 @@ namespace SiUnits
         public int Power { get; }
 
         /// <inheritdoc />
-        public override Factor<T> Pow(int power) => power == 1 ? this : new NameFactor<T>(this.Name, this.Power * power);
+        public override Factor<T> Pow(int power) => power switch
+        {
+            0 => NumberFactor<T>.Unit,
+            1 => this,
+            _ => new NameFactor<T>(this.Name, this.Power * power),
+        };
 
         /// <inheritdoc />
         public override string ToString() => this.Power == 1 ? this.Name : $"{this.Name}^{this.Power}";

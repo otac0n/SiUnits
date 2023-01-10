@@ -57,7 +57,7 @@ namespace SiUnits
         }
 
         /// <inheritdoc />
-        public override Factor<T> Pow(int power) =>
+        public override NumberFactor<T> Pow(int power) =>
             power == 1 ? this :
             power == 0 || this.Number == T.MultiplicativeIdentity ? Unit :
             new NumberFactor<T>(this.Number, this.Power * power);

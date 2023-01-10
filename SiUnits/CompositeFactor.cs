@@ -77,7 +77,11 @@ namespace SiUnits
         }
 
         /// <inheritdoc />
-        public override Factor<T> Pow(int power) => new CompositeFactor<T>(this.Factors.Select(f => f.Pow(power)));
+        public override Factor<T> Pow(int power) => power switch {
+            0 => NumberFactor<T>.Unit,
+            1 => this,
+            _ => new CompositeFactor<T>(this.Factors.Select(f => f.Pow(power)))
+        };
 
         /// <inheritdoc />
         public override string ToString() =>
