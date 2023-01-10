@@ -9,7 +9,7 @@ namespace SiUnits
     /// Represents a scalar value with units attached.
     /// </summary>
     /// <typeparam name="T">The type of value with units attached.</typeparam>
-    public readonly struct ValueWithUnits<T>
+    public readonly struct ValueWithUnits<T> : IEquatable<ValueWithUnits<T>>
         where T : IFloatingPoint<T>
     {
         /// <summary>
@@ -69,6 +69,30 @@ namespace SiUnits
 
         public static ValueWithUnits<T> operator +(ValueWithUnits<T> left, ValueWithUnits<T> right) =>
             new ValueWithUnits<T>(left.Value + right / left.Units, left.Units);
+
+        /// <inheritdoc/>
+        public static bool operator ==(ValueWithUnits<T> left, ValueWithUnits<T> right) => left.Equals(right);
+
+        /// <inheritdoc/>
+        public static bool operator !=(ValueWithUnits<T> left, ValueWithUnits<T> right) => !(left == right);
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj) => obj is ValueWithUnits<T> other && this.Equals(other);
+
+        /// <inheritdoc/>
+        public bool Equals(ValueWithUnits<T> other)
+        {
+            var x = this / other;
+            return x.Value == T.MultiplicativeIdentity && x.Units == Units.Quantity.One;
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return new CompositeFactor(
+                new NumberFactor(double.CreateChecked(this.Value)),
+                this.Units.Factors).GetHashCode();
+        }
 
         /// <inheritdoc/>
         public override string ToString() => $"{this.Value} {this.Units}";

@@ -3,11 +3,29 @@
 namespace SiUnits.Tests
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Numerics;
     using Xunit;
     using static Units;
 
     public class ValueWithUnitsTests
     {
+        public static readonly object[][] EquivalentFactors =
+        {
+            new object[] { new CompositeFactor(Factors.Kilo, Factors.Second) },
+            new object[] { new CompositeFactor(new CompositeFactor(Factors.Kilo), new CompositeFactor(Factors.Second)) },
+            new object[] { new CompositeFactor(Factors.One, new CompositeFactor(Factors.Kilo, Factors.Second)) },
+            new object[] { new CompositeFactor(Factors.Deca, Factors.Hecto, Factors.Second) },
+            new object[] { new CompositeFactor(new CompositeFactor(Factors.Deca, new NumberFactor(10)), new CompositeFactor(Factors.Deca, Factors.Second)) },
+            new object[] { new CompositeFactor(new NumberFactor(2, 2), new NumberFactor(5, 2), new NumberFactor(10), Factors.Second) },
+        };
+
+        public static IEnumerable<object[]> GetEquivalentFactorPairs() =>
+            from l in FactorTests.EquivalentFactors
+            from r in FactorTests.EquivalentFactors
+            select new[] { l[0], r[0] };
+
         [Fact]
         public void Divide_UnitsAreNotConstant_ThrowsInvalidOperationException()
         {
@@ -59,6 +77,15 @@ namespace SiUnits.Tests
             var distanceInNano = (distanceA + distanceB + distanceC) / (Units)"nm";
 
             Assert.Equal(expected, distanceInNano);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetEquivalentFactorPairs))]
+        public void Equals_WithEquivalentFactors_ReturnsTrue(Factor factorA, Factor factorB)
+        {
+            var a = 42.0 * new Units(factorA);
+            var b = 42.0 * new Units(factorB);
+            Assert.True(a.Equals(b));
         }
     }
 }
