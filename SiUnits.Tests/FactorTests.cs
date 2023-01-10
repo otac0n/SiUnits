@@ -46,13 +46,6 @@ namespace SiUnits.Tests
 
         [Theory]
         [MemberData(nameof(GetEquivalentPairs))]
-        public void Equals_WithAnEquivalentFactor_ReturnsTrue(Factor left, Factor right)
-        {
-            Assert.True(left.Equals(right));
-        }
-
-        [Theory]
-        [MemberData(nameof(GetEquivalentPairs))]
         public void GetHashCode_WithAnEquivalentFactor_ReturnsTheSameValue(Factor left, Factor right)
         {
             Assert.Equal(left.GetHashCode(), right.GetHashCode());

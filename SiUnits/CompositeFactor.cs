@@ -56,7 +56,7 @@ namespace SiUnits
                 select f.Value.ToString());
 
         /// <inheritdoc/>
-        public override int GetHashCode() => this.Factors.Sum(f => f.GetHashCode());
+        public override int GetHashCode() => unchecked(this.Factors.Sum(f => f.GetHashCode()));
 
         /// <inheritdoc/>
         public override bool Equals(Factor other) => other switch
