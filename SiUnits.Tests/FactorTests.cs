@@ -20,6 +20,7 @@ namespace SiUnits.Tests
             new object[] { new CompositeFactor(Factors.One, new CompositeFactor(Factors.Kilo, Factors.Second)) },
             new object[] { new CompositeFactor(Factors.Deca, Factors.Hecto, Factors.Second) },
             new object[] { new CompositeFactor(new CompositeFactor(Factors.Deca, new NumberFactor(10)), new CompositeFactor(Factors.Deca, Factors.Second)) },
+            new object[] { new CompositeFactor(new NumberFactor(2, 2), new NumberFactor(5, 2), new NumberFactor(10), Factors.Second) },
         };
 
         public static IEnumerable<object[]> GetEquivalentPairs() =>
@@ -36,10 +37,25 @@ namespace SiUnits.Tests
         }
 
         [Theory]
+        [MemberData(nameof(VariousFactors))]
+        public void GetHashCode_WithAMatchingCompositeFactor_ReturnsTheSameValue(Factor factor)
+        {
+            var composite = new CompositeFactor(factor);
+            Assert.Equal(factor.GetHashCode(), composite.GetHashCode());
+        }
+
+        [Theory]
         [MemberData(nameof(GetEquivalentPairs))]
         public void Equals_WithAnEquivalentFactor_ReturnsTrue(Factor left, Factor right)
         {
             Assert.True(left.Equals(right));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetEquivalentPairs))]
+        public void GetHashCode_WithAnEquivalentFactor_ReturnsTheSameValue(Factor left, Factor right)
+        {
+            Assert.Equal(left.GetHashCode(), right.GetHashCode());
         }
     }
 }

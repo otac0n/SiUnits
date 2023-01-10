@@ -26,6 +26,10 @@ namespace SiUnits
         public static readonly Units Nano = new Units(SiUnits.Factors.Nano);
         public static readonly Units Peta = new Units(SiUnits.Factors.Peta);
         public static readonly Units Pico = new Units(SiUnits.Factors.Pico);
+        public static readonly Units Quecto = new Units(SiUnits.Factors.Quecto);
+        public static readonly Units Quetta = new Units(SiUnits.Factors.Quetta);
+        public static readonly Units Ronna = new Units(SiUnits.Factors.Ronna);
+        public static readonly Units Ronto = new Units(SiUnits.Factors.Ronto);
         public static readonly Units Tera = new Units(SiUnits.Factors.Tera);
         public static readonly Units Yocto = new Units(SiUnits.Factors.Yocto);
         public static readonly Units Yotta = new Units(SiUnits.Factors.Yotta);
