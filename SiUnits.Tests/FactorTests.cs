@@ -2,16 +2,29 @@
 
 namespace SiUnits.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
     using static Units<double>;
     using CompositeFactor = SiUnits.CompositeFactor<double>;
-    using Factor = SiUnits.Factor<double>;
     using NumberFactor = SiUnits.NumberFactor<double>;
+    using Units = SiUnits.Factor<double>;
 
     public class FactorTests
     {
+        public static readonly object[][] ExpectedUnits =
+        {
+            new object[] { "m", Distance.Meter },
+            new object[] { "meter", Distance.Meter },
+            new object[] { "metre", Distance.Meter },
+            new object[] { "meters", Distance.Meter },
+            new object[] { "metres", Distance.Meter },
+            new object[] { "s", Time.Second },
+            new object[] { "second", Time.Second },
+            new object[] { "seconds", Time.Second },
+        };
+
         public static readonly object[][] VariousFactors =
         {
             new object[] { Energy.Joule },
@@ -36,7 +49,7 @@ namespace SiUnits.Tests
 
         [Theory]
         [MemberData(nameof(VariousFactors))]
-        public void Equals_WithAMatchingCompositeFactor_ReturnsTrue(Factor factor)
+        public void Equals_WithAMatchingCompositeFactor_ReturnsTrue(Units factor)
         {
             var composite = new CompositeFactor(factor);
             Assert.True(factor.Equals(composite));
@@ -44,7 +57,7 @@ namespace SiUnits.Tests
 
         [Theory]
         [MemberData(nameof(VariousFactors))]
-        public void GetHashCode_WithAMatchingCompositeFactor_ReturnsTheSameValue(Factor factor)
+        public void GetHashCode_WithAMatchingCompositeFactor_ReturnsTheSameValue(Units factor)
         {
             var composite = new CompositeFactor(factor);
             Assert.Equal(factor.GetHashCode(), composite.GetHashCode());
@@ -52,9 +65,43 @@ namespace SiUnits.Tests
 
         [Theory]
         [MemberData(nameof(GetEquivalentPairs))]
-        public void GetHashCode_WithAnEquivalentFactor_ReturnsTheSameValue(Factor left, Factor right)
+        public void GetHashCode_WithAnEquivalentFactor_ReturnsTheSameValue(Units left, Units right)
         {
             Assert.Equal(left.GetHashCode(), right.GetHashCode());
+        }
+
+        [Theory]
+        [MemberData(nameof(ExpectedUnits))]
+        public void Convert_Always_ReturnsExpectedUnits(string input, Units expected)
+        {
+            var actual = (Units)input;
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Convert_WhenUnitsAreEmpty_ThrowsFormatException()
+        {
+            Assert.Throws<FormatException>(() => (Units)"");
+        }
+
+        [Fact]
+        public void Divide_WhenGiventDistanceAndTime_ReturnsSpeed()
+        {
+            var distance = Distance.Meter;
+            var time = Time.Second;
+            var speed = distance / time;
+
+            Assert.Equal("meter*second^-1", speed.ToString());
+        }
+
+        [Fact]
+        public void Multiply_WhenGivenSpeedAndTime_ReturnsDistance()
+        {
+            var speed = (Units)"m/s";
+            var time = Time.Second;
+            var distance = speed * time;
+
+            Assert.Equal("meter", distance.ToString());
         }
     }
 }
