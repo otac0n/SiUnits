@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2037
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5B5960FC-2C0B-47A0-A0ED-C2A63C08C82A}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,9 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		license.md = license.md
 		readme.md = readme.md
 		SharedAssemblyInfo.props = SharedAssemblyInfo.props
-		Strict.ruleset = Strict.ruleset
 		stylecop.json = stylecop.json
-		Tests.ruleset = Tests.ruleset
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiUnits", "SiUnits\SiUnits.csproj", "{3F0E35FC-8C65-42AA-9CF7-BB2436A3D49B}"
