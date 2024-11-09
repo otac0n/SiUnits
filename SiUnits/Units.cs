@@ -2,9 +2,6 @@
 
 namespace SiUnits
 {
-    using System;
-    using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
     using System.Numerics;
 
     /// <summary>
@@ -40,7 +37,6 @@ namespace SiUnits
         public static readonly NumberFactor<T> Zepto;
         public static readonly NumberFactor<T> Zetta;
 
-        [SuppressMessage("Performance", "CA1810:Initialize reference type static fields inline", Justification = "The order of field initialization is important.")]
         static Units()
         {
             var ten = T.CreateChecked(10);

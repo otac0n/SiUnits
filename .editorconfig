@@ -61,6 +61,7 @@ csharp_using_directive_placement = inside_namespace
 
 [*.{cs,vb}]
 dotnet_analyzer_diagnostic.severity = warning
+dotnet_diagnostic.CA1000.severity = none
 dotnet_diagnostic.CA1006.severity = none
 dotnet_diagnostic.CA1020.severity = none
 dotnet_diagnostic.CA1026.severity = none

@@ -85,15 +85,15 @@ namespace SiUnits
         /// Checks if the given value with units is a constant value.  Only <see cref="NumberFactor{T}">number units</see> or <see cref="CompositeFactor{T}">composite units</see>
         /// containing number units are supported.  To convert a value with additional units, divide by the expected units first.
         /// </summary>
-        /// <returns>A boolean indicating if the factor is a constant numeric value.</returns>
-        public bool IsConstant() => false;
+        /// <returns>A boolean indicating if the value is a constant numeric value (no units).</returns>
+        public bool IsConstant() => this.Units.IsConstant();
 
         /// <summary>
         /// Checks if the given value with units is a constant value.  Only <see cref="NumberFactor{T}">number units</see> or <see cref="CompositeFactor{T}">composite units</see>
         /// containing number units are supported.  To convert a value with additional units, divide by the expected units first.
         /// </summary>
         /// <param name="value">A variable that will be set to the constant numeric value.</param>
-        /// <returns>A boolean indicating if the factor is a constant numeric value.</returns>
+        /// <returns>A boolean indicating if the value is a constant numeric value (no units).</returns>
         public bool IsConstant(out T value)
         {
             if (this.Units.IsConstant(out value))
