@@ -1,8 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <Authors>John &amp; Katie Gietzen</Authors>
-    <Copyright>Copyright © 2018-2022 $(Authors)</Copyright>
-    <Product>SiUnits</Product>
-    <NeutralLanguage>en-US</NeutralLanguage>
-  </PropertyGroup>
-</Project>

@@ -1,11 +1,11 @@
-// Copyright © John & Katie Gietzen. All Rights Reserved. This source is subject to the MIT license. Please see license.md for more information.
+﻿// Copyright © John & Katie Gietzen. All Rights Reserved. This source is subject to the MIT license. Please see license.md for more information.
 
 namespace SiUnits.Tests
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Xunit;
+    using NUnit.Framework;
     using static SiUnits.Units<double>;
     using Units = SiUnits.Factor<double>;
 
@@ -16,22 +16,25 @@ namespace SiUnits.Tests
             from r in FactorTests.EquivalentFactors
             select new[] { l[0], r[0] };
 
-        [Fact]
+        [Test]
         public void Divide_UnitsAreNotConstant_ThrowsInvalidOperationException()
         {
             var mass = 1 * Mass.Kilogram;
-            Assert.Throws<InvalidOperationException>(() => mass / Quantity.One);
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var fail = mass / Quantity.One;
+            });
         }
 
-        [Fact]
+        [Test]
         public void Divide_WhenUnitsDifferByAConstantFactor_ScalesTheValueByTheConstantFactor()
         {
             var mass = 1 * Mass.Kilogram;
             var massInGrams = mass / Mass.Gram;
-            Assert.Equal(1000, massInGrams);
+            Assert.That(massInGrams, Is.EqualTo(1000));
         }
 
-        [Fact]
+        [Test]
         public void Integration_DifferenceOfDistances()
         {
             var distanceA = 1 * (Units)"km";
@@ -41,10 +44,10 @@ namespace SiUnits.Tests
 
             var distanceInNano = (distanceA - distanceB - distanceC) / (Units)"nm";
 
-            Assert.Equal(expected, distanceInNano);
+            Assert.That(distanceInNano, Is.EqualTo(expected));
         }
 
-        [Fact]
+        [Test]
         public void Integration_SpeedEquation()
         {
             var speed = 10 * (Units)"m/s";
@@ -53,10 +56,10 @@ namespace SiUnits.Tests
 
             var timeInSeconds = time / Time.Second;
 
-            Assert.Equal(200.0, timeInSeconds);
+            Assert.That(timeInSeconds, Is.EqualTo(200.0));
         }
 
-        [Fact]
+        [Test]
         public void Integration_SumOfDistances()
         {
             var distanceA = 1 * (Units)"km";
@@ -66,11 +69,11 @@ namespace SiUnits.Tests
 
             var distanceInNano = (distanceA + distanceB + distanceC) / (Units)"nm";
 
-            Assert.Equal(expected, distanceInNano);
+            Assert.That(distanceInNano, Is.EqualTo(expected));
         }
 
         [Theory]
-        [MemberData(nameof(GetEquivalentFactorPairs))]
+        [TestCaseSource(nameof(GetEquivalentFactorPairs))]
         public void Equals_WithEquivalentFactors_ReturnsTrue(Units factorA, Units factorB)
         {
             var a = 42.0 * factorA;

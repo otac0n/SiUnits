@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <Authors>John &amp; Katie Gietzen</Authors>
+    <Copyright>Copyright © 2018-2022 $(Authors)</Copyright>
+    <Product>SiUnits</Product>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FixMe" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

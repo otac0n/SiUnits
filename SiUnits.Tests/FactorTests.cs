@@ -1,12 +1,12 @@
-// Copyright © John & Katie Gietzen. All Rights Reserved. This source is subject to the MIT license. Please see license.md for more information.
+﻿// Copyright © John & Katie Gietzen. All Rights Reserved. This source is subject to the MIT license. Please see license.md for more information.
 
 namespace SiUnits.Tests
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Xunit;
-    using static Units<double>;
+    using NUnit.Framework;
+    using static SiUnits.Units<double>;
     using CompositeFactor = SiUnits.CompositeFactor<double>;
     using NumberFactor = SiUnits.NumberFactor<double>;
     using Units = SiUnits.Factor<double>;
@@ -47,8 +47,8 @@ namespace SiUnits.Tests
             from r in EquivalentFactors
             select new[] { l[0], r[0] };
 
-        [Theory]
-        [MemberData(nameof(VariousFactors))]
+        [Test]
+        [TestCaseSource(nameof(VariousFactors))]
         public void Equals_WithAMatchingCompositeFactor_ReturnsTrue(Units factor)
         {
             var composite = new CompositeFactor(factor);
@@ -56,52 +56,55 @@ namespace SiUnits.Tests
         }
 
         [Theory]
-        [MemberData(nameof(VariousFactors))]
+        [TestCaseSource(nameof(VariousFactors))]
         public void GetHashCode_WithAMatchingCompositeFactor_ReturnsTheSameValue(Units factor)
         {
             var composite = new CompositeFactor(factor);
-            Assert.Equal(factor.GetHashCode(), composite.GetHashCode());
+            Assert.That(composite.GetHashCode(), Is.EqualTo(factor.GetHashCode()));
         }
 
         [Theory]
-        [MemberData(nameof(GetEquivalentPairs))]
+        [TestCaseSource(nameof(GetEquivalentPairs))]
         public void GetHashCode_WithAnEquivalentFactor_ReturnsTheSameValue(Units left, Units right)
         {
-            Assert.Equal(left.GetHashCode(), right.GetHashCode());
+            Assert.That(left.GetHashCode(), Is.EqualTo(right.GetHashCode()));
         }
 
         [Theory]
-        [MemberData(nameof(ExpectedUnits))]
+        [TestCaseSource(nameof(ExpectedUnits))]
         public void Convert_Always_ReturnsExpectedUnits(string input, Units expected)
         {
             var actual = (Units)input;
-            Assert.Equal(expected, actual);
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [Fact]
+        [Test]
         public void Convert_WhenUnitsAreEmpty_ThrowsFormatException()
         {
-            Assert.Throws<FormatException>(() => (Units)"");
+            Assert.Throws<FormatException>(() =>
+            {
+                var fail = (Units)"";
+            });
         }
 
-        [Fact]
+        [Test]
         public void Divide_WhenGiventDistanceAndTime_ReturnsSpeed()
         {
             var distance = Distance.Meter;
             var time = Time.Second;
             var speed = distance / time;
 
-            Assert.Equal("meter*second^-1", speed.ToString());
+            Assert.That(speed.ToString(), Is.EqualTo("meter*second^-1"));
         }
 
-        [Fact]
+        [Test]
         public void Multiply_WhenGivenSpeedAndTime_ReturnsDistance()
         {
-            var speed = (Units)"m/s";
+            var speed = Units.Parse("m/s");
             var time = Time.Second;
             var distance = speed * time;
 
-            Assert.Equal("meter", distance.ToString());
+            Assert.That(distance.ToString(), Is.EqualTo("meter"));
         }
     }
 }
