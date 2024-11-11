@@ -74,10 +74,19 @@ namespace SiUnits.Tests
 
         [Theory]
         [TestCaseSource(nameof(GetEquivalentFactorPairs))]
-        public void Equals_WithEquivalentFactors_ReturnsTrue(Units factorA, Units factorB)
+        public void Equals_WithEqualValuesAndEquivalentFactors_ReturnsTrue(Units factorA, Units factorB)
         {
             var a = 42.0 * factorA;
             var b = 42.0 * factorB;
+            Assert.True(a.Equals(b));
+        }
+
+        [Theory]
+        [TestCaseSource(nameof(GetEquivalentFactorPairs))]
+        public void Equals_WithDifferntFactorsButEquivalentValues_ReturnsTrue(Units factorA, Units factorB)
+        {
+            var a = 2 * Kilo * Distance.Meter;
+            var b = 2000 * Distance.Meter;
             Assert.True(a.Equals(b));
         }
     }
